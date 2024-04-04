@@ -1,0 +1,63 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+.login-container form {
+    width: 400px;
+    margin: 0.5rem;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 15px;
+
+}
+
+.login-container h2 {
+    text-align: center;
+    padding: 30px;
+    margin-bottom: 40px;
+    color: #29b6f6;
+}
+.input-container {
+    margin: 20px;
+}
+.login-container input {
+    display: block;
+    border: 3px solid #3e3e3e;
+    width: 95%;
+    margin: auto;
+    height: 50px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.login-container .create-account {
+    padding: 30px;
+    margin-top: 40px;
+    color: #3e3e3e;
+}
+.login-container a {
+    color: #3e3e3e;
+}
+.login-container a:hover {
+    text-decoration: underline;
+}
+.login-container .btn-login {
+    display: block;
+    width: 50%;
+    height: 50px;
+    border: none;
+    padding: 10px;
+    margin: auto;
+    border-radius: 5px;
+	font-weight: bold;
+    background-color: #3e3e3e;
+}
+.login-container .btn-login:enabled {
+    
+    background-color: #29b6f6;
+    color: #fff;
+}
+
+
+
