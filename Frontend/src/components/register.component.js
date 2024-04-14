@@ -1,99 +1,116 @@
-import React, { useState } from 'react';
-import authService from "../services/auth.service";
+import React, { Component } from 'react';
+import AuthService from "../services/auth.service";
 
-const Registration = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-    const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-    const [confirmPasswordError, setConfirmPasswordError] = useState('');
-    const [registrationError, setRegistrationError] = useState('');
+class Registration extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            email: '',
+            password: '',
+            confirmPassword: '',
+            isButtonDisabled: true,
+            emailError: '',
+            passwordError: '',
+            confirmPasswordError: '',
+            registrationError: ''
+        };
+    }
 
-    const handleEmailChange = (event) => {
+    componentDidMount() {
+        this.updateButtonState();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.email !== this.state.email || prevState.password !== this.state.password || prevState.confirmPassword !== this.state.confirmPassword) {
+            this.updateButtonState();
+        }
+    }
+
+    handleEmailChange = (event) => {
         const newEmail = event.target.value;
-        setEmail(newEmail);
-        setEmailError('');
-        checkButtonState(newEmail, password, confirmPassword);
-        if (!validateEmail(newEmail)) {
-            setEmailError('Podaj poprawny adres e-mail');
+        this.setState({ email: newEmail, emailError: '' });
+        if (!this.validateEmail(newEmail)) {
+            this.setState({ emailError: 'Podaj poprawny adres e-mail' });
         }
     };
 
-    const handlePasswordChange = (event) => {
+    handlePasswordChange = (event) => {
         const newPassword = event.target.value;
-        setPassword(newPassword);
-        setPasswordError('');
-        setConfirmPasswordError('');
-        checkButtonState(email, newPassword, confirmPassword);
+        this.setState({ password: newPassword, passwordError: '', confirmPasswordError: '' });
         if (newPassword.length < 8) {
-            setPasswordError('Hasło musi mieć co najmniej 8 znaków');
+            this.setState({ passwordError: 'Hasło musi mieć co najmniej 8 znaków' });
         }
-        if (confirmPassword && confirmPassword !== newPassword) {
-            setConfirmPasswordError('Hasła nie są takie same');
-        } else {
-            setConfirmPasswordError('');
+        if (this.state.confirmPassword !== newPassword) {
+            this.setState({ confirmPasswordError: 'Hasła nie są takie same' });
         }
     };
 
-    const handleConfirmPasswordChange = (event) => {
+    handleConfirmPasswordChange = (event) => {
         const newPassword = event.target.value;
-        setConfirmPassword(newPassword);
-        setConfirmPasswordError('');
-        checkButtonState(email, password, newPassword);
-        if (password !== newPassword) {
-            setConfirmPasswordError('Hasła nie są takie same');
+        this.setState({ confirmPassword: newPassword, confirmPasswordError: '' });
+        if (this.state.password !== newPassword) {
+            this.setState({ confirmPasswordError: 'Hasła nie są takie same' });
         }
     };
 
-    const checkButtonState = (email, password, confirmPassword) => {
-        setIsButtonDisabled(!(email && password && confirmPassword && !emailError && !passwordError && !confirmPasswordError));
-    };
-
-    const validateEmail = (email) => {
+    validateEmail = (email) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
 
-    const handleRegistration = async (event) => {
-        event.preventDefault();
-        try {
-            const response = await authService.register(email, password);
-            console.log(response.data);
-        } catch (error) {
-            console.error('Błąd rejestracji:', error);
-            setRegistrationError('Błąd rejestracji: ' + error.message);
+    updateButtonState = () => {
+        const { email, password, confirmPassword, emailError, passwordError, confirmPasswordError } = this.state;
+        if (email && password && confirmPassword && !emailError && !passwordError && !confirmPasswordError) {
+            this.setState({ isButtonDisabled: false });
+        } else {
+            this.setState({ isButtonDisabled: true });
         }
     };
 
-    return (
-        <div className='login-container'>
-            <form>
-                <h2>Stwórz konto</h2>
-                <div className='input-container'>
-                    <input type='email' placeholder='Email' value={email} onChange={handleEmailChange} />
-                    {emailError && <span className="error">{emailError}</span>}
-                </div>
-                <div className='input-container'>
-                    <input type='password' placeholder='Hasło' value={password} onChange={handlePasswordChange} />
-                    {passwordError && <span className="error">{passwordError}</span>}
-                </div>
-                <div className='input-container'>
-                    <input type='password' placeholder='Potwierdź hasło' value={confirmPassword} onChange={handleConfirmPasswordChange} />
-                    {confirmPasswordError && <span className="error">{confirmPasswordError}</span>}
-                </div>
-                <div className='input-container'>
-                    <input className='btn-login' value='Zarejestruj się' type='submit' onClick={handleRegistration} disabled={isButtonDisabled} />
-                </div>
-                {registrationError && <span className="error">{registrationError}</span>}
-                <div className='create-account'>
-                    <p>
-                        Masz konto? <a href='/login'>Zaloguj się</a>
-                    </p>
-                </div>
-            </form>
-        </div>
-    );
-};
+    handleRegistration = async (event) => {
+        event.preventDefault();
+        const { email, password } = this.state;
+        try {
+            const response = await AuthService.register(email, password);
+            console.log(response.data);
+            this.setState({ registrationError: 'Rejestracja powiodła się!' });
+        } catch (error) {
+            console.error('Błąd rejestracji:', error);
+            this.setState({ registrationError: 'Błąd rejestracji: ' + error.message });
+        }
+    };
+
+    render() {
+        const { email, password, confirmPassword, isButtonDisabled, emailError, passwordError, confirmPasswordError, registrationError } = this.state;
+
+        return (
+            <div className='login-container'>
+                <form>
+                    <h2>Stwórz konto</h2>
+                    <div className='input-container'>
+                        <input type='email' placeholder='Email' value={email} onChange={this.handleEmailChange} />
+                        {emailError && <span className="error">{emailError}</span>}
+                    </div>
+                    <div className='input-container'>
+                        <input type='password' placeholder='Hasło' value={password} onChange={this.handlePasswordChange} />
+                        {passwordError && <span className="error">{passwordError}</span>}
+                    </div>
+                    <div className='input-container'>
+                        <input type='password' placeholder='Potwierdź hasło' value={confirmPassword} onChange={this.handleConfirmPasswordChange} />
+                        {confirmPasswordError && <span className="error">{confirmPasswordError}</span>}
+                    </div>
+                    <div className='input-container'>
+                        <input className='btn-login' value='Zarejestruj się' type='submit' onClick={this.handleRegistration} disabled={isButtonDisabled} />
+                    </div>
+                    {registrationError && <span className="success">{registrationError}</span>}
+                    <div className='create-account'>
+                        <p>
+                            Masz konto? <a href='/login'>Zaloguj się</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        );
+    }
+}
 
 export default Registration;

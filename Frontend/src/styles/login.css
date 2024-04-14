@@ -56,16 +56,20 @@
     margin: auto;
     border-radius: 5px;
     font-weight: bold;
-    background-color: #29b6f6;
-    color: #fff;
-    cursor: pointer; 
+    background-color: #656d6d;
+    color: #c7c3c3;
 }
 
 .login-container .btn-login:enabled {
     background-color: #29b6f6;
     color: #fff;
+    cursor: pointer;
 }
 
 .error {
-    color:#ff0000;
+    color: #ff0000;
+}
+
+.success {
+    color: #008000;
 }
