@@ -10,5 +10,6 @@
     <include file="db/changelog/changelog-v2.0.xml"/>
     <include file="db/changelog/changelog-v2.1.xml"/>
     <include file="db/changelog/changelog-v2.2.xml"/>
+    <include file="db/changelog/changelog-v2.3.xml"/>
 
 </databaseChangeLog>

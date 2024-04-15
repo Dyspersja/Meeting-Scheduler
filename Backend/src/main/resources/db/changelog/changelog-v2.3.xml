@@ -4,16 +4,15 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="8" author="Dyspersja">
-        <modifyDataType
-                tableName="attendee"
-                columnName="user_id"
-                newDataType="bigint"
-        />
-        <modifyDataType
-                tableName="meeting"
-                columnName="organizer_id"
-                newDataType="bigint"
+    <changeSet id="11" author="Dyspersja">
+        <addForeignKeyConstraint
+                baseColumnNames="organizer_id"
+                baseTableName="meeting"
+                referencedColumnNames="id"
+                referencedTableName="user"
+                constraintName="meeting_user_fk"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
         />
     </changeSet>
 
