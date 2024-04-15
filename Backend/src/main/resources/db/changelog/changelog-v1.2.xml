@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="5" author="Dyspersja">
+    <changeSet id="addRelationBetweenUserAndUserRoles" author="Dyspersja">
         <addForeignKeyConstraint
                 baseColumnNames="user_id"
                 baseTableName="user_roles"
@@ -15,7 +15,7 @@
                 onUpdate="RESTRICT"
         />
     </changeSet>
-    <changeSet id="6" author="Dyspersja">
+    <changeSet id="addRelationBetweenRefreshTokenAndUser" author="Dyspersja">
         <addForeignKeyConstraint
                 baseColumnNames="user_id"
                 baseTableName="refreshtoken"
@@ -26,7 +26,7 @@
                 onUpdate="RESTRICT"
         />
     </changeSet>
-    <changeSet id="7" author="Dyspersja">
+    <changeSet id="addRelationBetweenRolesAndUserRoles" author="Dyspersja">
         <addForeignKeyConstraint
                 baseColumnNames="role_id"
                 baseTableName="user_roles"
