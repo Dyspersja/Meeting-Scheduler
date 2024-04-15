@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="addRelationBetweenAttendeeAndUser" author="Dyspersja">
+        <addForeignKeyConstraint
+                baseColumnNames="user_id"
+                baseTableName="attendee"
+                referencedColumnNames="id"
+                referencedTableName="user"
+                constraintName="attendee_user_fk"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+        />
+    </changeSet>
+    <changeSet id="addRelationBetweenAttendeeAndMeeting" author="Dyspersja">
+        <addForeignKeyConstraint
+                baseColumnNames="meeting_id"
+                baseTableName="attendee"
+                referencedColumnNames="id"
+                referencedTableName="meeting"
+                constraintName="attendee_meeting_fk"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+        />
+    </changeSet>
+
+</databaseChangeLog>
