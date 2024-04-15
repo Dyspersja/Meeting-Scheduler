@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="5" author="Dyspersja">
+        <addForeignKeyConstraint
+                baseColumnNames="user_id"
+                baseTableName="user_roles"
+                referencedColumnNames="id"
+                referencedTableName="user"
+                constraintName="user_roles_user_fk"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+        />
+    </changeSet>
+    <changeSet id="6" author="Dyspersja">
+        <addForeignKeyConstraint
+                baseColumnNames="user_id"
+                baseTableName="refreshtoken"
+                referencedColumnNames="id"
+                referencedTableName="user"
+                constraintName="refreshtoken_user_fk"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+        />
+    </changeSet>
+    <changeSet id="7" author="Dyspersja">
+        <addForeignKeyConstraint
+                baseColumnNames="role_id"
+                baseTableName="user_roles"
+                referencedColumnNames="id"
+                referencedTableName="roles"
+                constraintName="user_roles_roles_fk"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+        />
+    </changeSet>
+</databaseChangeLog>
