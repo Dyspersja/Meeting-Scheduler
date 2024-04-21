@@ -19,19 +19,19 @@ public class Meeting {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "title", nullable = false, length = 255)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description", nullable = true, length = -1)
+    @Column(name = "description")
     private String description;
 
     @Column(name = "date_time", nullable = false)
     private Timestamp dateTime;
 
-    @Column(name = "location", nullable = true, length = 255)
+    @Column(name = "location")
     private String location;
 
     @ManyToOne
-    @JoinColumn(name = "user",referencedColumnName = "id")
+    @JoinColumn(name = "organizer_id",referencedColumnName = "id")
     private User organizerId;
 }

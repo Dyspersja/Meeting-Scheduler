@@ -18,15 +18,15 @@ public class Attendee {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "meeting",referencedColumnName = "id")
+    @JoinColumn(name = "meeting_id",referencedColumnName = "id")
     private Meeting meetingId;
 
     @ManyToOne
-    @JoinColumn(name = "user", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User userId;
 
 
-    @Column(name = "status", nullable = true, length = 20)
+    @Column(name = "status", length = 20)
     private String status;
 
 }
