@@ -15,21 +15,18 @@ import com.ismb.meetingscheduler.payload.Requests.TokenRefreshRequest;
 import com.ismb.meetingscheduler.payload.Responses.JwtResponse;
 import com.ismb.meetingscheduler.payload.Responses.MessageResponse;
 import com.ismb.meetingscheduler.payload.Responses.TokenRefreshResponse;
+import com.ismb.meetingscheduler.repository.RefreshTokenRepository;
 import com.ismb.meetingscheduler.repository.RoleRepository;
 import com.ismb.meetingscheduler.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -57,28 +54,37 @@ public class AuthController {
 
     @Autowired
     RefreshTokenService refreshTokenService;
+    @Autowired
+    RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        if (!userRepository.existsByEmail(loginRequest.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Błędne dane logowania");
+        } else {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            if (refreshTokenRepository.findByUser(userRepository.findByEmail(loginRequest.getEmail()).get()).isPresent()) {
+                refreshTokenService.deleteByUserId(userRepository.findByEmail(loginRequest.getEmail()).get().getId());
+            }
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        String jwt = jwtUtils.generateJwtToken(userDetails.getEmail());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            String jwt = jwtUtils.generateJwtToken(userDetails.getEmail());
 
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
 
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
-        return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken(), userDetails.getId(),
-                userDetails.getEmail(), roles));
+            return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken(), userDetails.getId(),
+                    userDetails.getEmail(), roles));
+        }
     }
 
     @PostMapping("/refreshtoken")
