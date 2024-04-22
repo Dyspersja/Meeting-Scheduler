@@ -1,0 +1,4 @@
+FROM mysql:latest
+ENV MYSQL_DATABASE=meeting_scheduler
+EXPOSE 3306
+CMD ["mysqld"]
