@@ -31,7 +31,7 @@
             <column name="meeting_id" type="int">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="int">
+            <column name="account_id" type="int">
                 <constraints nullable="false"/>
             </column>
             <!-- TODO: Change into enum when implementing -->

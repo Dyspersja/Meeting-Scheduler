@@ -4,35 +4,35 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="addRelationBetweenUserAndUserRoles" author="Dyspersja">
+    <changeSet id="addRelationBetweenAccountAndAccountsRoles" author="Dyspersja">
         <addForeignKeyConstraint
-                baseColumnNames="user_id"
-                baseTableName="user_roles"
+                baseColumnNames="account_id"
+                baseTableName="accounts_roles"
                 referencedColumnNames="id"
-                referencedTableName="user"
-                constraintName="user_roles_user_fk"
+                referencedTableName="account"
+                constraintName="accounts_roles_account_fk"
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
         />
     </changeSet>
-    <changeSet id="addRelationBetweenRefreshTokenAndUser" author="Dyspersja">
+    <changeSet id="addRelationBetweenRefreshTokenAndAccount" author="Dyspersja">
         <addForeignKeyConstraint
-                baseColumnNames="user_id"
-                baseTableName="refreshtoken"
+                baseColumnNames="account_id"
+                baseTableName="refresh_token"
                 referencedColumnNames="id"
-                referencedTableName="user"
-                constraintName="refreshtoken_user_fk"
+                referencedTableName="account"
+                constraintName="refresh_token_account_fk"
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
         />
     </changeSet>
-    <changeSet id="addRelationBetweenRolesAndUserRoles" author="Dyspersja">
+    <changeSet id="addRelationBetweenRolesAndAccountsRoles" author="Dyspersja">
         <addForeignKeyConstraint
                 baseColumnNames="role_id"
-                baseTableName="user_roles"
+                baseTableName="accounts_roles"
                 referencedColumnNames="id"
-                referencedTableName="roles"
-                constraintName="user_roles_roles_fk"
+                referencedTableName="role"
+                constraintName="accounts_roles_role_fk"
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
         />

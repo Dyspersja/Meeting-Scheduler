@@ -5,7 +5,7 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="addLoginSystemTables" author="Dyspersja">
-        <createTable tableName="roles">
+        <createTable tableName="role">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -14,7 +14,7 @@
             </column>
         </createTable>
 
-        <createTable tableName="refreshtoken">
+        <createTable tableName="refresh_token">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -24,12 +24,12 @@
             <column name="token" type="varchar(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="user_id" type="bigint">
+            <column name="account_id" type="bigint">
                 <constraints nullable="true" unique="true"/>
             </column>
         </createTable>
 
-        <createTable tableName="user">
+        <createTable tableName="account">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -41,8 +41,8 @@
             </column>
         </createTable>
 
-        <createTable tableName="user_roles">
-            <column name="user_id" type="bigint">
+        <createTable tableName="accounts_roles">
+            <column name="account_id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="role_id" type="int">
