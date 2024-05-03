@@ -4,10 +4,10 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="changeUserIdTypesToBigint" author="Dyspersja">
+    <changeSet id="changeAccountIdTypesToBigint" author="Dyspersja">
         <modifyDataType
                 tableName="attendee"
-                columnName="user_id"
+                columnName="account_id"
                 newDataType="bigint"
         />
         <modifyDataType

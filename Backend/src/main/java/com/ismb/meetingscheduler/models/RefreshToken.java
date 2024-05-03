@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.time.Instant;
 
-@Entity(name = "refreshtoken")
+@Entity(name = "refresh_token")
 @Getter
 @Setter
 public class RefreshToken {
@@ -16,7 +16,7 @@ public class RefreshToken {
     private Long Id;
 
     @OneToOne
-    @JoinColumn(name="user_id",referencedColumnName = "id")
+    @JoinColumn(name="account_id",referencedColumnName = "id")
     private User user;
 
     @Column(nullable = false, unique = true)
