@@ -4,13 +4,13 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="addRelationBetweenAttendeeAndUser" author="Dyspersja">
+    <changeSet id="addRelationBetweenAttendeeAndAccount" author="Dyspersja">
         <addForeignKeyConstraint
-                baseColumnNames="user_id"
+                baseColumnNames="account_id"
                 baseTableName="attendee"
                 referencedColumnNames="id"
-                referencedTableName="user"
-                constraintName="attendee_user_fk"
+                referencedTableName="account"
+                constraintName="attendee_account_fk"
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
         />
