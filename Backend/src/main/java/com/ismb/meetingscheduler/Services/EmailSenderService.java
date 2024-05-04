@@ -1,7 +1,6 @@
 package com.ismb.meetingscheduler.Services;
 
 
-
 import com.ismb.meetingscheduler.models.Meeting;
 import com.ismb.meetingscheduler.repository.AttendeeRepository;
 import com.ismb.meetingscheduler.repository.MeetingRepository;
@@ -43,42 +42,44 @@ public class EmailSenderService {
     UserRepository userRepository;
 
     @Async
-    public void sendEmail(String email,String meetingTitle, Date meetingDate) throws MessagingException {
-        try{
+    public void sendEmail(String email, String meetingTitle, Date meetingDate) throws MessagingException {
+        try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             helper.setTo(email);
             String subject = "Meeting notification!";
-            String content = "<html>" +
-                    "<head>" +
-                    "<style>" +
-                    "body {" +
-                    "    font-family: Arial, sans-serif;" +
-                    "    background-color: #f2f2f2;" +
-                    "    margin: 0;" +
-                    "    padding: 0;" +
-                    "}" +
-                    ".container {" +
-                    "    width: 600px;" +
-                    "    margin: 20px auto;" +
-                    "    background-color: #ffffff;" +
-                    "    padding: 20px;" +
-                    "    border-radius: 10px;" +
-                    "    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" +
-                    "}" +
-                    "p {" +
-                    "    margin-bottom: 10px;" +
-                    "}" +
-                    "</style>" +
-                    "</head>" +
-                    "<body>" +
-                    "<div class=\"container\">" +
-                    "<p>Dzień dobry,</p>" +
-                    "<p>Przypominamy o nadchodzącym spotkaniu <strong>" + meetingTitle + "</strong>, które odbędzie się <strong>" + meetingDate + "</strong>.</p>" +
-                    "</div>" +
-                    "</body>" +
-                    "</html>";
+            String content = """
+                    <html>
+                        <head>
+                            <style>
+                                body {
+                                    font-family: Arial, sans-serif;
+                                    background-color: #f2f2f2;
+                                    margin: 0;
+                                    padding: 0;
+                                }
+                                .container {
+                                    width: 600px;
+                                    margin: 20px auto;
+                                    background-color: #ffffff;
+                                    padding: 20px;
+                                    border-radius: 10px;
+                                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                                }
+                                p {
+                                    margin-bottom: 10px;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class=\\"container\\">
+                                <p>Dzień dobry,</p>
+                                <p>Przypominamy o nadchodzącym spotkaniu <strong>" + meetingTitle + "</strong>, które odbędzie się <strong>" + meetingDate + "</strong>.</p>
+                            </div>
+                        </body>
+                    </html>
+                    """;
 
             helper.setSubject(subject);
             helper.setText(content, true);
