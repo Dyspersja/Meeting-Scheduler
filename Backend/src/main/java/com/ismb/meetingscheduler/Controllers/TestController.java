@@ -1,5 +1,6 @@
 package com.ismb.meetingscheduler.Controllers;
 
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
+
     @GetMapping("/public")
     public String publicAccess() {
         return "Public access content.";
