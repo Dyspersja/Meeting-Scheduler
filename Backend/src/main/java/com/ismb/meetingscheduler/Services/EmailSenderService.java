@@ -46,12 +46,39 @@ public class EmailSenderService {
     public void sendEmail(String email,String meetingTitle, Date meetingDate) throws MessagingException {
         try{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             helper.setTo(email);
             String subject = "Meeting notification!";
-            String content = "<p>Dzien dobry, </p>" +
-                    "<p>Przypominamy o nadchodzacym spotkaniu " + meetingTitle+ " ktore odbedzie sie "+meetingDate+"</p>";
+            String content = "<html>" +
+                    "<head>" +
+                    "<style>" +
+                    "body {" +
+                    "    font-family: Arial, sans-serif;" +
+                    "    background-color: #f2f2f2;" +
+                    "    margin: 0;" +
+                    "    padding: 0;" +
+                    "}" +
+                    ".container {" +
+                    "    width: 600px;" +
+                    "    margin: 20px auto;" +
+                    "    background-color: #ffffff;" +
+                    "    padding: 20px;" +
+                    "    border-radius: 10px;" +
+                    "    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" +
+                    "}" +
+                    "p {" +
+                    "    margin-bottom: 10px;" +
+                    "}" +
+                    "</style>" +
+                    "</head>" +
+                    "<body>" +
+                    "<div class=\"container\">" +
+                    "<p>Dzień dobry,</p>" +
+                    "<p>Przypominamy o nadchodzącym spotkaniu <strong>" + meetingTitle + "</strong>, które odbędzie się <strong>" + meetingDate + "</strong>.</p>" +
+                    "</div>" +
+                    "</body>" +
+                    "</html>";
 
             helper.setSubject(subject);
             helper.setText(content, true);
@@ -62,8 +89,7 @@ public class EmailSenderService {
         }
     }
 
-//    @Scheduled(cron = "0 0 1 * * *", zone = "Europe/Warsaw") // o 1 w nocy codziennie
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(cron = "0 0 1 * * *", zone = "Europe/Warsaw") // o 1 w nocy codziennie
     public void checkMeetingDateAndSendNotifications() throws MessagingException {
         Timestamp currentDay = Timestamp.from(Instant.now());
         Timestamp nextDay = Timestamp.from(currentDay.toInstant().plus(Duration.ofDays(1)));
