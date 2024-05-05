@@ -23,8 +23,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
-      args:
-        - JASYPT_PASSWORD=${JASYPT_PASSWORD}
     ports:
       - "8080:8080"
     links:

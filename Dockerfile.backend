@@ -1,9 +1,6 @@
 # Compile Phase
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS compile
 
-ARG JASYPT_PASSWORD
-ENV jasypt.encryptor.password=$JASYPT_PASSWORD
-
 WORKDIR /app
 COPY ./Backend/pom.xml .
 COPY ./Backend/src ./src
