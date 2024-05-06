@@ -1,0 +1,149 @@
+.dashboard{
+    margin: 30px;
+}
+
+.left-panel {
+    display: inline-block; 
+    float: left;
+    width: 28%;
+    vertical-align: top;
+    padding: 0 20px;
+    padding-right: 0;
+    margin: 30px 0;
+}
+
+.add-button {
+    margin: 0 30px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.add-button button {
+    height:50px; 
+    width: 10rem;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: large;
+    background-color: #29b6f6;
+    color: #fff;
+}
+
+.add-button button:hover {
+    background-color: #1e88e5; 
+}
+
+.planner {
+    margin: 30px 0;
+    width: 100%;
+    height: 300px;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.calendar {
+    vertical-align: top;
+    display: inline-block; 
+    float: right;
+    background-color: #fff;
+    color: #5e5e5e;
+    width: 65%;
+    padding: 30px;
+    padding-left: 10px;
+    margin: 30px;
+    border-radius: 15px;
+    border-spacing: 0; 
+}
+
+Table tbody {
+    display: block;
+    max-height: 70vh;
+    overflow: auto;
+}
+
+Table thead,
+Table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+Table {
+    border-collapse: collapse; 
+    color: #5e5e5e !important;
+}
+
+tr .hour {
+    width: 60px;
+    text-align: right;
+    border: none;
+}
+
+th:nth-child(1) {
+    width: 60px;
+    border: none;
+}
+
+th{
+    width: 100px; 
+    height: 2rem;
+    padding: 10px; 
+    text-align: center;
+}
+
+.weekday {
+    height: 60px;
+    border: 1px solid #ccc;
+    text-align: center;
+    cursor: pointer;
+}
+
+.weekday:hover {
+    background-color: #edeaea;
+}
+
+h1 {
+    text-align: center;
+}
+
+.month {
+    display: block;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    font-size: larger;
+}
+.week-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.week-buttons button:hover {
+    color: #1e88e5; 
+}
+
+.week-buttons button {
+    padding: 10px 15px;
+    margin: 0 10px;
+    border: none;
+    background-color: #fff;
+    color: #29b6f6;
+}
+
+select {
+    width: auto;
+    appearance: none; 
+    text-align: center;
+    background-color: white;
+    border: 1px solid #ffffff;
+    padding: 5px;
+    color: #29b6f6;
+    font-weight: bold;
+}
+
+select:hover{
+    border: 1px solid #dad1d1;
+    border-radius: 5px;
+}
