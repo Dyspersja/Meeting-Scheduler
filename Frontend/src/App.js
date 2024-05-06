@@ -5,7 +5,9 @@ import Login from "./components/login.component";
 import Registration from "./components/register.component";
 import AuthService from "./services/auth.service";
 import "./styles/login.css";
+import "./styles/calendar.css";
 import "./App.css";
+import Calendar from "./components/calendar.component";
 
 class App extends Component {
   constructor(props) {
@@ -34,6 +36,7 @@ class App extends Component {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
+            <Route path="/calendar" element={<Calendar />} />
           </Routes>
         </BrowserRouter>
       </div>

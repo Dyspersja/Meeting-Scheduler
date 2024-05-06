@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Form, Button } from 'react-bootstrap';
 import AuthService from "../services/auth.service";
 
 class Registration extends Component {
@@ -84,30 +85,34 @@ class Registration extends Component {
 
         return (
             <div className='login-container'>
-                <form>
+                <Form>
                     <h2>Stwórz konto</h2>
-                    <div className='input-container'>
-                        <input type='email' placeholder='Email' value={email} onChange={this.handleEmailChange} />
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Control type="email" placeholder="E-mail" value={email} onChange={this.handleEmailChange} />
                         {emailError && <span className="error">{emailError}</span>}
-                    </div>
-                    <div className='input-container'>
-                        <input type='password' placeholder='Hasło' value={password} onChange={this.handlePasswordChange} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Control type="password" placeholder="Hasło" value={password} onChange={this.handlePasswordChange} />
                         {passwordError && <span className="error">{passwordError}</span>}
-                    </div>
-                    <div className='input-container'>
-                        <input type='password' placeholder='Potwierdź hasło' value={confirmPassword} onChange={this.handleConfirmPasswordChange} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicConfirmPassword">
+                        <Form.Control type="password" placeholder="Potwierdź hasło" value={confirmPassword} onChange={this.handleConfirmPasswordChange} />
                         {confirmPasswordError && <span className="error">{confirmPasswordError}</span>}
-                    </div>
-                    <div className='input-container'>
-                        <input className='btn-login' value='Zarejestruj się' type='submit' onClick={this.handleRegistration} disabled={isButtonDisabled} />
-                    </div>
+                    </Form.Group>
+
+                    <Button className='btn-login' type="submit" onClick={this.handleRegistration} disabled={isButtonDisabled}>
+                        Zarejestruj się
+                    </Button>
                     {registrationError && <span className="success">{registrationError}</span>}
-                    <div className='create-account'>
+
+                    <div className="create-account">
                         <p>
                             Masz konto? <a href='/login'>Zaloguj się</a>
                         </p>
                     </div>
-                </form>
+                </Form>
             </div>
         );
     }

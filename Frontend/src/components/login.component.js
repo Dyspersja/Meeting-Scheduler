@@ -74,7 +74,7 @@ class Login extends Component {
                         {passwordError && <span className="error">{passwordError}</span>}
                     </Form.Group>
 
-                    <Button className='btn-login' variant="primary" type="submit" onClick={this.handleLogin} disabled={isButtonDisabled}>
+                    <Button className='btn-login' type="submit" onClick={this.handleLogin} disabled={isButtonDisabled}>
                         Zaloguj się
                     </Button>
                     {loginError && <span className="error">{loginError}</span>}
