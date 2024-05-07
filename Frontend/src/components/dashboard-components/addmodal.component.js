@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import 'bootstrap/dist/css/bootstrap.css';
 
 const AddEventModal = ({ showModal, onClose, clickedDate }) => {
     const [title, setTitle] = useState('');

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import AddEventModal from './add.component';
+import AddEventModal from './addmodal.component';
 
 class Calendar extends Component {
     constructor(props) {
@@ -28,7 +28,7 @@ class Calendar extends Component {
                     <td className="hour">{i}:00</td>
                     {weekdays.map((day, index) => (
                         <td key={index} className="weekday" onClick={() => this.openModal(firstDayOfWeek, index, i)}>
-
+                            {/* tu spotkania boże */}
                         </td>
                     ))}
                 </tr>
@@ -92,18 +92,11 @@ class Calendar extends Component {
     };
 
     openModal = (firstDayOfWeek, dayIndex, hourIndex) => {
-        if (firstDayOfWeek && dayIndex !== undefined && hourIndex !== undefined) {
-            const clickedDate = new Date(firstDayOfWeek);
-            console.log(hourIndex)
-            clickedDate.setDate(firstDayOfWeek.getDate() + dayIndex);
-            console.log(clickedDate)
-            clickedDate.setHours(hourIndex, 0, 0, 0);
-            console.log(clickedDate)
-            this.setState({ showModal: true, clickedDate: clickedDate });
-        } else {
-            const currentDate = new Date();
-            this.setState({ showModal: true, clickedDate: currentDate });
-        }
+        const clickedDate = new Date(firstDayOfWeek);
+        clickedDate.setDate(firstDayOfWeek.getDate() + dayIndex);
+        clickedDate.setHours(hourIndex, 0, 0, 0);
+        this.setState({ showModal: true, clickedDate: clickedDate });
+
     };
 
     closeModal = () => {
@@ -112,16 +105,7 @@ class Calendar extends Component {
 
     render() {
         return (
-            <div className='dashboard'>
-                <div className='left-panel'>
-                    <div className='add-button'>
-                        <button onClick={this.openModal}>Dodaj</button>
-                    </div>
-                    <div className='planner'>
-
-                    </div>
-                </div>
-
+            <div>
                 {this.renderCalendar()}
                 <AddEventModal
                     showModal={this.state.showModal}
