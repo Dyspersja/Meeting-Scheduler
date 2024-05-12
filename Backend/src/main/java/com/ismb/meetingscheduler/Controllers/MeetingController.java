@@ -5,7 +5,6 @@ import com.ismb.meetingscheduler.models.Meeting;
 import com.ismb.meetingscheduler.models.User;
 import com.ismb.meetingscheduler.payload.Requests.MeetingRequest;
 import com.ismb.meetingscheduler.payload.Responses.MeetingResponse;
-import com.ismb.meetingscheduler.payload.Responses.MessageResponse;
 import com.ismb.meetingscheduler.repository.MeetingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class MeetingController {
     private final MeetingRepository meetingRepository;
 
     @PostMapping
-    public MeetingResponse createMeeting(
+    public ResponseEntity<MeetingResponse> createMeeting(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestBody MeetingRequest request
     ) {
@@ -36,6 +35,6 @@ public class MeetingController {
                 .build();
 
         Meeting createdMeeting = meetingRepository.save(meeting);
-        return MeetingResponse.fromMeeting(createdMeeting);
+        return ResponseEntity.ok(MeetingResponse.fromMeeting(createdMeeting));
     }
 }
