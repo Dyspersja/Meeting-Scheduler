@@ -67,7 +67,7 @@ public class MeetingController {
     }
 
     @PostMapping("/{meetingId}/attendee")
-    public ResponseEntity<AttendeeResponse> createMeeting(
+    public ResponseEntity<AttendeeResponse> addAttendee(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable long meetingId,
             @RequestBody AttendeeRequest attendeeRequest
