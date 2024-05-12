@@ -1,10 +1,7 @@
 package com.ismb.meetingscheduler.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -13,6 +10,7 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Meeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
