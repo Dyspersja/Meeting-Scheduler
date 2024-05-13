@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import AuthService from "../services/auth.service";
 import { withRouter } from '../common/with-router';
+import authService from "../services/auth.service";
 
 
 class Login extends Component {
@@ -42,8 +43,7 @@ class Login extends Component {
         const { email, password } = this.state;
         try {
             await AuthService.login(email, password);
-            this.props.router.navigate("/");
-            window.location.reload();
+            window.location.replace("/index");
         } catch (error) {
             console.error('Błąd logowania:', error);
             if (error.response && error.response.status === 401) {

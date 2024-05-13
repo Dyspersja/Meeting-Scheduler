@@ -5,12 +5,14 @@ import com.ismb.meetingscheduler.models.Meeting;
 import com.ismb.meetingscheduler.models.User;
 import com.ismb.meetingscheduler.payload.Requests.MeetingRequest;
 import com.ismb.meetingscheduler.payload.Responses.MeetingResponse;
-import com.ismb.meetingscheduler.payload.Responses.MessageResponse;
 import com.ismb.meetingscheduler.repository.MeetingRepository;
+import com.ismb.meetingscheduler.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class MeetingController {
 
     private final MeetingRepository meetingRepository;
-
+    private final UserRepository userRepository;
     @PostMapping
     public MeetingResponse createMeeting(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -37,5 +39,10 @@ public class MeetingController {
 
         Meeting createdMeeting = meetingRepository.save(meeting);
         return MeetingResponse.fromMeeting(createdMeeting);
+    }
+
+    @GetMapping("/getTodayMeetings")
+    public List<Meeting> findTodayMeetings(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return meetingRepository.findTodayMeetingsByOrganizerId(userDetails.getId());
     }
 }

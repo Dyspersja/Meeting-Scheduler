@@ -16,10 +16,11 @@ class App extends Component {
         <BrowserRouter>
           <Navbar />
           <Routes>
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
             <Route
-              path="/"
+              path="/index"
               element={
                 <PrivateRoute>
                   <Dashboard />
