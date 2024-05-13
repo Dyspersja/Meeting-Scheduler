@@ -46,10 +46,8 @@ public class JwtUtils {
 
     public boolean validateJwtToken(String authToken) {
         SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-        System.out.println("Sprawdzam token");
         try{
             Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(authToken);
-            System.out.println("true");
             return true;
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token: {}", e.getMessage());

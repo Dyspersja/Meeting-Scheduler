@@ -34,9 +34,10 @@ class App extends Component {
         <BrowserRouter>
           <Navbar />
           <Routes>
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/index" element={<Dashboard />} />
           </Routes>
         </BrowserRouter>
       </div>

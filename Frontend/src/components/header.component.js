@@ -40,7 +40,6 @@ class Navbar extends Component {
 
   logOut() {
     AuthService.logout();
-    this.setState({ currentUser: undefined, userReady: false })
   }
 
   render() {
