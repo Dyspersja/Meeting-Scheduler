@@ -49,6 +49,31 @@ public class MeetingController {
         return ResponseEntity.ok(MeetingResponse.fromMeeting(createdMeeting));
     }
 
+    @PutMapping("/{meetingId}")
+    public ResponseEntity<MeetingResponse> createMeeting(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable long meetingId,
+            @RequestBody MeetingRequest request
+    ) {
+        // The meeting must exist in order to be updated.
+        Optional<Meeting> optionalMeeting = meetingRepository.findById(meetingId);
+        if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
+
+        Meeting meeting = optionalMeeting.get();
+
+        // Only the organizer of the meeting can update it.
+        if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        meeting.setTitle(request.getTitle());
+        meeting.setDescription(request.getDescription());
+        meeting.setLocation(request.getLocation());
+        meeting.setDateTime(request.getDateTime());
+
+        Meeting updatedMeeting = meetingRepository.save(meeting);
+        return ResponseEntity.ok(MeetingResponse.fromMeeting(updatedMeeting));
+    }
+
     @DeleteMapping("/{meetingId}")
     public ResponseEntity<?> deleteMeeting(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
