@@ -105,4 +105,35 @@ public class MeetingController {
         Attendee newAttendee = attendeeRepository.save(attendee);
         return ResponseEntity.ok(AttendeeResponse.fromAttendee(newAttendee));
     }
+
+    @DeleteMapping("/{meetingId}/attendee")
+    public ResponseEntity<AttendeeResponse> deleteAttendee(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable long meetingId,
+            @RequestBody AttendeeRequest attendeeRequest
+    ) {
+        // The meeting from which we want to remove an attendee must exist.
+        Optional<Meeting> optionalMeeting = meetingRepository.findById(meetingId);
+        if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
+
+        // Attendee to remove must exist
+        Optional<User> optionalUser = userRepository.findByEmail(attendeeRequest.getEmail());
+        if(optionalUser.isEmpty()) return ResponseEntity.notFound().build();
+
+        User user = optionalUser.get();
+        Meeting meeting = optionalMeeting.get();
+
+        // Only the meeting organizer can remove attendees.
+        if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        // Attendee must be added to meeting to be removed.
+        Optional<Attendee> optionalAttendee = attendeeRepository.findByMeetingIdIdAndUserIdId(meetingId, user.getId());
+        if(optionalAttendee.isEmpty()) return ResponseEntity.notFound().build();
+
+        Attendee attendee = optionalAttendee.get();
+
+        attendeeRepository.delete(attendee);
+        return ResponseEntity.noContent().build();
+    }
 }
