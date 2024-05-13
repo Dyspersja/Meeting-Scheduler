@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddEventModal from './dashboard-components/addmodal.component';
+import AddEventModal from './dashboard-components/addeventmodal.component';
 import Calendar from './dashboard-components/calendar.component';
 import LeftPanel from './dashboard-components/leftpanel.component';
 

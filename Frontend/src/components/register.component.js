@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import AuthService from "../services/auth.service";
 
 class Registration extends Component {
@@ -66,7 +66,6 @@ class Registration extends Component {
             this.setState({ isButtonDisabled: true });
         }
     };
-
     handleRegistration = async (event) => {
         event.preventDefault();
         const { email, password } = this.state;
@@ -76,9 +75,15 @@ class Registration extends Component {
             this.setState({ registrationError: 'Rejestracja powiodła się!' });
         } catch (error) {
             console.error('Błąd rejestracji:', error);
-            this.setState({ registrationError: 'Błąd rejestracji: ' + error.message });
+            if (error.response) {
+                const errorMessage = error.response.data.message;
+                this.setState({ registrationError: errorMessage });
+            } else {
+                this.setState({ registrationError: 'Błąd rejestracji: ' + error.message });
+            }
         }
     };
+
 
     render() {
         const { email, password, confirmPassword, isButtonDisabled, emailError, passwordError, confirmPasswordError, registrationError } = this.state;
@@ -88,25 +93,61 @@ class Registration extends Component {
                 <Form>
                     <h2>Stwórz konto</h2>
                     <Form.Group controlId="formBasicEmail">
-                        <Form.Control type="email" placeholder="E-mail" value={email} onChange={this.handleEmailChange} />
-                        {emailError && <span className="error">{emailError}</span>}
+                        <Form.Control
+                            type="email"
+                            placeholder="E-mail"
+                            value={email}
+                            onChange={this.handleEmailChange}
+                            isInvalid={emailError !== ''}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {emailError}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
-                        <Form.Control type="password" placeholder="Hasło" value={password} onChange={this.handlePasswordChange} />
-                        {passwordError && <span className="error">{passwordError}</span>}
+                        <Form.Control
+                            type="password"
+                            placeholder="Hasło"
+                            value={password}
+                            onChange={this.handlePasswordChange}
+                            isInvalid={passwordError !== ''}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {passwordError}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicConfirmPassword">
-                        <Form.Control type="password" placeholder="Potwierdź hasło" value={confirmPassword} onChange={this.handleConfirmPasswordChange} />
-                        {confirmPasswordError && <span className="error">{confirmPasswordError}</span>}
+                        <Form.Control
+                            type="password"
+                            placeholder="Potwierdź hasło"
+                            value={confirmPassword}
+                            onChange={this.handleConfirmPasswordChange}
+                            isInvalid={confirmPasswordError !== ''}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {confirmPasswordError}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Button className='btn-login' type="submit" onClick={this.handleRegistration} disabled={isButtonDisabled}>
+                    <Button
+                        className='btn-login'
+                        type="submit"
+                        onClick={this.handleRegistration}
+                        disabled={isButtonDisabled}
+                    >
                         Zarejestruj się
                     </Button>
-                    {registrationError && <span className="success">{registrationError}</span>}
-
+                    {
+                        registrationError ? (
+                            registrationError !== 'Rejestracja powiodła się!' ? (
+                                <Alert variant="danger">{registrationError}</Alert>
+                            ) : (
+                                <Alert variant="success">Rejestracja powiodła się!</Alert>
+                            )
+                        ) : null
+                    }
                     <div className="create-account">
                         <p>
                             Masz konto? <a href='/login'>Zaloguj się</a>

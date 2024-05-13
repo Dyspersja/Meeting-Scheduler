@@ -40,7 +40,6 @@ class Navbar extends Component {
 
   logOut() {
     AuthService.logout();
-    this.setState({ currentUser: undefined, userReady: false })
   }
 
   render() {
@@ -61,7 +60,7 @@ class Navbar extends Component {
             </div>
             <div className='list'>
               <ul>
-                <li><NavLink to="/calendar">Informacje</NavLink></li>
+                <li><NavLink to="/info">Informacje</NavLink></li>
                 {currentUser ? (
                   <li className='auth'><NavLink onClick={this.logOut}>Wyloguj się</NavLink></li>
                 ) : (
