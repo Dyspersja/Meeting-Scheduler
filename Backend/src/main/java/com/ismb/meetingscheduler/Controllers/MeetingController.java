@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -50,7 +52,7 @@ public class MeetingController {
     }
 
     @PutMapping("/{meetingId}")
-    public ResponseEntity<MeetingResponse> createMeeting(
+    public ResponseEntity<MeetingResponse> updateMeeting(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable long meetingId,
             @RequestBody MeetingRequest request
@@ -72,6 +74,24 @@ public class MeetingController {
 
         Meeting updatedMeeting = meetingRepository.save(meeting);
         return ResponseEntity.ok(MeetingResponse.fromMeeting(updatedMeeting));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<MeetingResponse>> getAllMeetings(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<Meeting> organizerMeetingList = meetingRepository.findByOrganizerIdId(userDetails.getId());
+        List<Meeting> attendeeMeetingList = meetingRepository.findByAttendeeId(userDetails.getId());
+
+        List<MeetingResponse> meetingResponseList = new ArrayList<>();
+
+        meetingResponseList.addAll(organizerMeetingList.stream()
+                .map(MeetingResponse::fromMeeting)
+                .toList());
+
+        meetingResponseList.addAll(attendeeMeetingList.stream()
+                .map(MeetingResponse::fromMeeting)
+                .toList());
+
+        return ResponseEntity.ok(meetingResponseList);
     }
 
     @DeleteMapping("/{meetingId}")
