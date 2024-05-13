@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="DEV_addInitialAccount" author="Dyspersja">
+        <insert tableName="account">
+            <column name="email">user@test.com</column>
+            <column name="password">$2a$10$U7F3VXEJjwXzc1yWqni2nOvY2DcWamDM1Eh1xw5nLEVGVnNTv1w82</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="DEV_addRoleToInitialAccount" author="Dyspersja">
+        <sql>
+            INSERT INTO accounts_roles (account_id, role_id)
+            VALUES (
+                (SELECT id FROM account WHERE email = 'user@test.com'),
+                (SELECT id FROM role WHERE name = 'ROLE_USER')
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

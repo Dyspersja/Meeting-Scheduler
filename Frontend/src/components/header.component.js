@@ -40,39 +40,40 @@ class Navbar extends Component {
 
   logOut() {
     AuthService.logout();
-    this.setState({ currentUser: undefined, userReady: false })
   }
 
   render() {
     const { menuOpen, currentUser } = this.state;
     return (
-      <nav>
-        <button
-          className={`menu-icon ${menuOpen ? 'open' : ''}`}
-          onClick={this.toggleMenu}
-          aria-label="Toggle Menu"
-        >
-          <FontAwesomeIcon icon={faBars} style={{ color: "white", fontSize: "20px" }} />
-        </button>
-        <div className={`navbar ${menuOpen ? 'open' : ''}`}>
-          <div>
-            <NavLink to="/"><h1>Meeting<span>Scheduler</span></h1></NavLink>
+      <div style={{ marginBottom: "70px" }}>
+        <nav>
+          <button
+            className={`menu-icon ${menuOpen ? 'open' : ''}`}
+            onClick={this.toggleMenu}
+            aria-label="Toggle Menu"
+          >
+            <FontAwesomeIcon icon={faBars} style={{ color: "white", fontSize: "20px" }} />
+          </button>
+          <div className={`navbar ${menuOpen ? 'open' : ''}`}>
+            <div>
+              <NavLink to="/"><h1>Meeting<span>Scheduler</span></h1></NavLink>
+            </div>
+            <div className='list'>
+              <ul>
+                <li><NavLink to="/info">Informacje</NavLink></li>
+                {currentUser ? (
+                  <li className='auth'><NavLink onClick={this.logOut}>Wyloguj się</NavLink></li>
+                ) : (
+                  <>
+                    <li className='auth'><NavLink to="/login">Zaloguj się</NavLink></li>
+                    <li className='auth'><NavLink to="/register">Stwórz konto</NavLink></li>
+                  </>
+                )}
+              </ul>
+            </div>
           </div>
-          <div className='list'>
-            <ul>
-              <li><NavLink to="/">Informacje</NavLink></li>
-              {currentUser ? (
-                <li className='auth'><NavLink onClick={this.logOut}>Wyloguj się</NavLink></li>
-              ) : (
-                <>
-                  <li className='auth'><NavLink to="/login">Zaloguj się</NavLink></li>
-                  <li className='auth'><NavLink to="/register">Stwórz konto</NavLink></li>
-                </>
-              )}
-            </ul>
-          </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     );
   }
 }

@@ -1,0 +1,18 @@
+# Compile Phase
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS compile
+
+WORKDIR /app
+COPY ./Backend/pom.xml .
+COPY ./Backend/src ./src
+
+RUN mvn clean package -DskipTests
+
+# Run Phase
+FROM openjdk:23-ea-17-slim
+
+WORKDIR /app
+COPY --from=compile /app/target/*.jar /app/meeting_scheduler.jar
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "meeting_scheduler.jar"]

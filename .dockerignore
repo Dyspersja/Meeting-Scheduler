@@ -1,0 +1,21 @@
+# Root Directory 
+README.md
+.gitignore
+
+# Frontend
+
+Frontend/node_modules/
+
+Frontend/README.md
+Frontend/.gitignore
+
+# Backend
+
+Backend/target/
+Backend/.idea/
+Backend/.mvn/
+
+Backend/README.md
+Backend/.gitignore
+Backend/mvnw
+Backend/mvnw.cmd

@@ -74,11 +74,11 @@ public class AuthController {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            String jwt = jwtUtils.generateJwtToken(userDetails.getEmail());
 
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
+            String jwt = jwtUtils.generateJwtToken(userDetails.getEmail());
 
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
 

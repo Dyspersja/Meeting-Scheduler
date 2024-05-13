@@ -1,0 +1,8 @@
+FROM mysql:latest
+
+ENV MYSQL_DATABASE=meeting_scheduler
+ENV MYSQL_ALLOW_EMPTY_PASSWORD=true
+
+EXPOSE 3306
+
+CMD ["mysqld"]
