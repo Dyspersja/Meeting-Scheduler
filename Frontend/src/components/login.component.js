@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Alert } from 'react-bootstrap';
 import AuthService from "../services/auth.service";
 import { withRouter } from '../common/with-router';
 
 
 class Login extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -45,8 +44,6 @@ class Login extends Component {
             await AuthService.login(email, password);
             this.props.router.navigate("/");
             window.location.reload();
-
-
         } catch (error) {
             console.error('Błąd logowania:', error);
             if (error.response && error.response.status === 401) {
@@ -65,19 +62,42 @@ class Login extends Component {
                 <Form>
                     <h2>Zaloguj się</h2>
                     <Form.Group controlId="formBasicEmail">
-                        <Form.Control type="email" placeholder="E-mail" value={email} onChange={this.handleEmailChange} />
-                        {emailError && <span className="error">{emailError}</span>}
+                        <Form.Control
+                            required
+                            type="email"
+                            placeholder="E-mail"
+                            value={email}
+                            onChange={this.handleEmailChange}
+                            isInvalid={emailError !== ''}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {emailError}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="formBasicPassword">
-                        <Form.Control type="password" placeholder="Hasło" value={password} onChange={this.handlePasswordChange} />
-                        {passwordError && <span className="error">{passwordError}</span>}
+                        <Form.Control
+                            required
+                            type="password"
+                            placeholder="Hasło"
+                            value={password}
+                            onChange={this.handlePasswordChange}
+                            isInvalid={passwordError !== ''}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {passwordError}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Button className='btn-login' type="submit" onClick={this.handleLogin} disabled={isButtonDisabled}>
+                    <Button
+                        className='btn-login'
+                        type="submit"
+                        onClick={this.handleLogin}
+                        disabled={isButtonDisabled}
+                    >
                         Zaloguj się
                     </Button>
-                    {loginError && <span className="error">{loginError}</span>}
+                    {loginError && <Alert variant="danger">{loginError}</Alert>}
 
                     <div className="create-account">
                         <p>Nie masz konta? <a href="/register">Zarejestruj się</a></p>
