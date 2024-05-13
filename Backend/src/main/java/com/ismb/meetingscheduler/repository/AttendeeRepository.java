@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaRepositories
 public interface AttendeeRepository extends JpaRepository<Attendee, Long> {
+    boolean existsByMeetingIdIdAndUserIdId(Long meetingId, Long accountId);
 }

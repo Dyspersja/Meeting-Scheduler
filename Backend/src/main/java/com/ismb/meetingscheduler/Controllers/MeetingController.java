@@ -54,11 +54,13 @@ public class MeetingController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable long meetingId
     ) {
+        // The meeting must exist in order to be deleted.
         Optional<Meeting> optionalMeeting = meetingRepository.findById(meetingId);
         if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
 
         Meeting meeting = optionalMeeting.get();
 
+        // Only the organizer of the meeting can delete it.
         if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to delete this meeting.");
 
@@ -72,16 +74,27 @@ public class MeetingController {
             @PathVariable long meetingId,
             @RequestBody AttendeeRequest attendeeRequest
     ) {
+        // The meeting to which we add an attendee must exist.
         Optional<Meeting> optionalMeeting = meetingRepository.findById(meetingId);
         if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
 
+        // Only registered attendees can be added.
         Optional<User> optionalAttendee = userRepository.findByEmail(attendeeRequest.getEmail());
         if(optionalAttendee.isEmpty()) return ResponseEntity.notFound().build();
 
         Meeting meeting = optionalMeeting.get();
         User user = optionalAttendee.get();
 
+        // Only the meeting organizer can add attendees.
         if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        // The organizer cannot invite themselves to the meeting.
+        if(Objects.equals(meeting.getOrganizerId().getId(), user.getId()))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        // The organizer cannot add the same attendee twice to the same meeting.
+        if(attendeeRepository.existsByMeetingIdIdAndUserIdId(meetingId, user.getId()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Attendee attendee = Attendee.builder()
