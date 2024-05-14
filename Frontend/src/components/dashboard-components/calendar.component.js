@@ -21,23 +21,32 @@ class Calendar extends Component {
         const currentDate = new Date();
         const firstDayOfWeek = new Date(currentDate);
         firstDayOfWeek.setDate(currentDate.getDate() + (this.state.currentWeek * 7));
-
+    
+        // Dopasujmy datę początkową do najbliższego poniedziałku
+        while (firstDayOfWeek.getDay() !== 1) {
+            firstDayOfWeek.setDate(firstDayOfWeek.getDate() - 1);
+        }
+    
         for (let i = 0; i < 24; i++) {
             hours.push(
                 <tr key={i}>
                     <td className="hour">{i}:00</td>
-                    {weekdays.map((day, index) => (
-                        <td key={index} className="weekday" onClick={() => this.openModal(firstDayOfWeek, index, i)}>
-                            {/* tu spotkania boże */}
-                        </td>
-                    ))}
+                    {weekdays.map((day, index) => {
+                        const date = new Date(firstDayOfWeek);
+                        date.setDate(firstDayOfWeek.getDate() + index);
+                        return (
+                            <td key={index} className="weekday" onClick={() => this.openModal(firstDayOfWeek, index, i)}>
+                                {/* tu spotkania boże */}
+                            </td>
+                        );
+                    })}
                 </tr>
             );
         }
-
+    
         const monthName = firstDayOfWeek.toLocaleString('default', { month: 'long' });
         const yearName = firstDayOfWeek.toLocaleString('default', { year: 'numeric' });
-
+    
         return (
             <div className='calendar'>
                 <div className='week-buttons'>
@@ -63,8 +72,7 @@ class Calendar extends Component {
                                     date.setDate(firstDayOfWeek.getDate() + index);
                                     return (
                                         <th key={index} className="weekday-header">
-                                            {day} <br /> {
-                                                date.getDate()}
+                                            {day} <br /> {date.getDate()}
                                         </th>
                                     );
                                 })}
@@ -78,7 +86,8 @@ class Calendar extends Component {
             </div>
         );
     };
-
+    
+    
     nextWeek = () => {
         this.setState(prevState => ({
             currentWeek: prevState.currentWeek + 1,
