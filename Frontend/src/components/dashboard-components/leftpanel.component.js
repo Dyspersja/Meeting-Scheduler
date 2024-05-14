@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import authService from "../../services/auth.service";
-import {wait} from "@testing-library/user-event/dist/utils";
 
 
 class LeftPanel extends Component {
@@ -27,7 +26,7 @@ class LeftPanel extends Component {
                 }
             });
             const data = await response.json();
-            this.setState({meetings: data});
+            this.setState({ meetings: data });
         });
     }
 
@@ -41,7 +40,7 @@ class LeftPanel extends Component {
                 <div className='planner'>
                     {Array.isArray(this.state.meetings) && this.state.meetings.map((item, index) => (
                         <div key={index} className="meeting-item"
-                             style={{backgroundColor: new Date(item.dateTime) < new Date() ? 'red' : 'green'}}>
+                            style={{ backgroundColor: new Date(item.dateTime) < new Date() ? 'red' : 'green' }}>
                             <p>Data i czas: {new Date(item.dateTime).toLocaleString()}</p>
                             <p>Opis: {item.description}</p>
                             <p>Lokalizacja: {item.location}</p>

@@ -16,8 +16,7 @@ const AddEventModal = ({ showModal, onClose, clickedDate }) => {
         if (showModal) {
             clearForm();
             if (clickedDate) {
-                var isoDate = new Date(clickedDate.getTime() - clickedDate.getTimezoneOffset() * 60000);
-                setDate(isoDate.toISOString().substr(0, 10));
+                setDate(clickedDate.toLocaleDateString('en-CA'));
                 setTime(clickedDate.toTimeString().substr(0, 5));
             }
         }
@@ -33,9 +32,24 @@ const AddEventModal = ({ showModal, onClose, clickedDate }) => {
     };
 
     const handleSave = async () => {
+        console.log(date)
+        console.log(time)
         const dateTime = date + ' ' + time;
+        var dateParts = dateTime.split(" ");
+        var time1 = dateParts[1].split(":");
+        var date1 = dateParts[0].split("-");
+        var year = parseInt(date1[0]);
+        var month = parseInt(date1[1]) - 1;
+        var day = parseInt(date1[2]);
+        var hour = parseInt(time1[0]);
+        var minute = parseInt(time1[1]);
+
+        var dateObject = new Date(year, month, day, hour, minute);
+        const mysqlDate = dateObject.toISOString().slice(0, 19).replace('T', ' ');
+        console.log(mysqlDate);
+
         try {
-            const response = await MeetingService.createMeeting(title, description, location, dateTime);
+            const response = await MeetingService.createMeeting(title, description, location, mysqlDate);
             console.log('Spotkanie dodane!', response.data);
             onClose();
         } catch (error) {
