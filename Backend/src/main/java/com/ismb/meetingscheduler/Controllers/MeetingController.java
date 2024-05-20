@@ -8,6 +8,7 @@ import com.ismb.meetingscheduler.payload.Requests.AttendeeRequest;
 import com.ismb.meetingscheduler.payload.Requests.MeetingRequest;
 import com.ismb.meetingscheduler.payload.Responses.AttendeeResponse;
 import com.ismb.meetingscheduler.payload.Responses.MeetingResponse;
+
 import com.ismb.meetingscheduler.repository.AttendeeRepository;
 import com.ismb.meetingscheduler.repository.MeetingRepository;
 import com.ismb.meetingscheduler.repository.UserRepository;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -180,5 +183,10 @@ public class MeetingController {
 
         attendeeRepository.delete(attendee);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/getTodayMeetings")
+    public List<Meeting> findTodayMeetings(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return meetingRepository.findTodayMeetingsByOrganizerId(userDetails.getId());
     }
 }
