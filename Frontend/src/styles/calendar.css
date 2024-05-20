@@ -15,21 +15,21 @@
 
 .meeting-item {
     width: 95%;
-    margin: 0 auto; /* Wysrodkowanie elementu */
-    font-family: Arial, sans-serif; /* Ustawienie czcionki */
-    font-size: 14px; /* Ustawienie rozmiaru czcionki */
-    line-height: 1.5; /* Ustawienie wysokości wiersza */
+    position: relative;
+    margin: 0 auto; 
+    font-family: Arial, sans-serif; 
+    font-size: 14px; 
+    line-height: 1.5;
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding: 15px; /* Zwiększenie wewnętrznego odstępu */
+    padding: 15px; 
     margin-top: 10px;
-    margin-bottom: 10px; /* Dodatkowy margines dolny */
+    margin-bottom: 10px; 
     background-color: #f6f5f5;
     -webkit-box-shadow: 3px 5px 12px 0px rgba(66, 68, 90, 1);
     -moz-box-shadow: 3px 5px 12px 0px rgba(66, 68, 90, 1);
     box-shadow: 3px 5px 12px 0px rgba(66, 68, 90, 1);
 }
-
 
 .meeting-item p {
     margin: 5px 0;
@@ -37,6 +37,54 @@
     font-weight: bold;
 }
 
+.meeting-item.red {
+    background-color: red;
+}
+
+.meeting-item.green {
+    background-color: green;
+}
+
+.meeting-item p {
+    margin: 0;
+}
+
+.meeting-item .action-button {
+    position: absolute;
+    top: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 5px;
+}
+
+.meeting-item .edit-button {
+    right: 30px;
+    color: #ffffff;
+}
+
+.meeting-item .edit-button:hover {
+    color: #cacaca;
+}
+
+.meeting-item .delete-button {
+    right: 0px;
+    color: #ffffff;
+}
+
+.meeting-item .delete-button:hover {
+    color: #cacaca;
+}
+
+.meeting-item .add-user-button {
+    right: 60px;
+    color: #fff;
+}
+
+.meeting-item .add-user-button:hover {
+    color: #cacaca;
+}
 
 .add-button {
     margin: 0 30px;
