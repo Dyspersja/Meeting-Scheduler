@@ -22,7 +22,6 @@ class Calendar extends Component {
         const firstDayOfWeek = new Date(currentDate);
         firstDayOfWeek.setDate(currentDate.getDate() + (this.state.currentWeek * 7));
     
-        // Dopasujmy datę początkową do najbliższego poniedziałku
         while (firstDayOfWeek.getDay() !== 1) {
             firstDayOfWeek.setDate(firstDayOfWeek.getDate() - 1);
         }

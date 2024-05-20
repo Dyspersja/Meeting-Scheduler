@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import MeetingService from '../../services/meeting.service';
 
-const AddEventModal = ({ showModal, onClose, clickedDate }) => {
+const AddEventModal = ({ showModal, onClose, meeting }) => {
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
     const [date, setDate] = useState('');
@@ -15,12 +15,15 @@ const AddEventModal = ({ showModal, onClose, clickedDate }) => {
     useEffect(() => {
         if (showModal) {
             clearForm();
-            if (clickedDate) {
-                setDate(clickedDate.toLocaleDateString('en-CA'));
-                setTime(clickedDate.toTimeString().substr(0, 5));
+            if (meeting) {
+                setTitle(meeting.title);
+                setLocation(meeting.location);
+                setDate(new Date(meeting.dateTime).toLocaleDateString('en-CA'));
+                setTime(new Date(meeting.dateTime).toTimeString().substr(0, 5));
+                setDescription(meeting.description);
             }
         }
-    }, [showModal, clickedDate]);
+    }, [showModal, meeting]);
 
     const clearForm = () => {
         setTitle('');
@@ -32,36 +35,38 @@ const AddEventModal = ({ showModal, onClose, clickedDate }) => {
     };
 
     const handleSave = async () => {
-        console.log(date)
-        console.log(time)
         const dateTime = date + ' ' + time;
-        var dateParts = dateTime.split(" ");
-        var time1 = dateParts[1].split(":");
-        var date1 = dateParts[0].split("-");
-        var year = parseInt(date1[0]);
-        var month = parseInt(date1[1]) - 1;
-        var day = parseInt(date1[2]);
-        var hour = parseInt(time1[0]);
-        var minute = parseInt(time1[1]);
+        const dateParts = dateTime.split(" ");
+        const time1 = dateParts[1].split(":");
+        const date1 = dateParts[0].split("-");
+        const year = parseInt(date1[0]);
+        const month = parseInt(date1[1]) - 1;
+        const day = parseInt(date1[2]);
+        const hour = parseInt(time1[0]);
+        const minute = parseInt(time1[1]);
 
-        var dateObject = new Date(year, month, day, hour, minute);
+        const dateObject = new Date(year, month, day, hour, minute);
         const mysqlDate = dateObject.toISOString().slice(0, 19).replace('T', ' ');
-        console.log(mysqlDate);
 
         try {
-            const response = await MeetingService.createMeeting(title, description, location, mysqlDate);
-            console.log('Spotkanie dodane!', response.data);
+            if (meeting) {
+                await MeetingService.updateMeeting(meeting.id, title, description, location, mysqlDate);
+                console.log('Spotkanie zaktualizowane!');
+            } else {
+                await MeetingService.createMeeting(title, description, location, mysqlDate);
+                console.log('Spotkanie dodane!');
+            }
             onClose();
         } catch (error) {
             console.error('Wystąpił błąd:', error);
-            setError('Wystąpił błąd podczas dodawania spotkania.');
+            setError('Wystąpił błąd podczas zapisywania spotkania.');
         }
     };
 
     return (
         <Modal show={showModal} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Nowe spotkanie</Modal.Title>
+                <Modal.Title>{meeting ? 'Edytuj spotkanie' : 'Nowe spotkanie'}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {error && <div className="alert alert-danger" role="alert">{error}</div>}
