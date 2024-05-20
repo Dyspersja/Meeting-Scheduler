@@ -116,6 +116,25 @@ public class MeetingController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{meetingId}/attendee")
+    public ResponseEntity<List<AttendeeResponse>> getAttendees(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable long meetingId
+    ) {
+        Optional<Meeting> optionalMeeting = meetingRepository.findById(meetingId);
+        if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
+
+        Meeting meeting = optionalMeeting.get();
+
+        if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        
+        List<Attendee> attendeeList = attendeeRepository.findByMeetingIdId(meetingId);
+        List<AttendeeResponse> attendeeResponseList = attendeeList.stream()
+                .map(AttendeeResponse::fromAttendee).toList();
+        return ResponseEntity.ok(attendeeResponseList);
+    }
+
     @PostMapping("/{meetingId}/attendee")
     public ResponseEntity<AttendeeResponse> addAttendee(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
