@@ -1,16 +1,14 @@
 package com.ismb.meetingscheduler.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Attendee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -22,7 +20,7 @@ public class Attendee {
     private Meeting meetingId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
     private User userId;
 
 
