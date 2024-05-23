@@ -29,6 +29,7 @@ class Dashboard extends Component {
                     showModal={this.state.showModal}
                     onClose={this.closeModal}
                     clickedDate={this.state.clickedDate}
+                    updateMeetingList={this.updateMeetingList}
                 />
             </div>
         );
@@ -36,4 +37,3 @@ class Dashboard extends Component {
 }
 
 export default Dashboard;
-

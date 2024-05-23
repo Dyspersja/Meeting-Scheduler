@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import MeetingService from '../../services/meeting.service';
 
-const AddEventModal = ({ showModal, onClose, meeting }) => {
+const AddEventModal = ({ showModal, onClose, meeting, updateMeetingList }) => {
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
     const [date, setDate] = useState('');
@@ -46,24 +46,29 @@ const AddEventModal = ({ showModal, onClose, meeting }) => {
         const minute = parseInt(time1[1]);
 
         const dateObject = new Date(year, month, day, hour, minute);
-        const mysqlDate = dateObject.toISOString().slice(0, 19).replace('T', ' ');
 
         try {
             if (meeting) {
-                await MeetingService.updateMeeting(meeting.id, title, description, location, mysqlDate);
+                await MeetingService.updateMeeting(meeting.id, title, description, location, dateTime);
                 console.log('Spotkanie zaktualizowane!');
             } else {
-                await MeetingService.createMeeting(title, description, location, mysqlDate);
+                await MeetingService.createMeeting(title, description, location, dateTime);
                 console.log('Spotkanie dodane!');
             }
+
+            if (typeof updateMeetingList === 'function') {
+                await updateMeetingList();
+            }
+
             onClose();
         } catch (error) {
-            console.error('Wystąpił błąd:', error);
+            console.error('Error creating/editing meeting:', error);
             setError('Wystąpił błąd podczas zapisywania spotkania.');
         }
-    };
+    }
 
-    return (
+
+        return (
         <Modal show={showModal} onHide={onClose}>
             <Modal.Header closeButton>
                 <Modal.Title>{meeting ? 'Edytuj spotkanie' : 'Nowe spotkanie'}</Modal.Title>

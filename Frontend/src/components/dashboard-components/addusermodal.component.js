@@ -20,11 +20,12 @@ const AddUserModal = ({ showModal, onClose, meeting }) => {
     };
 
 
-    //to ogarnąć
-    
+
     const handleSave = async () => {
         try {
+            console.log('Meeting:', meeting); // Dodaj ten log
             if (meeting) {
+                console.log('Meeting ID:', meeting.id); // Dodaj ten log
                 await MeetingService.addUserToMeeting(meeting.id, email);
             }
             onClose();
@@ -33,6 +34,7 @@ const AddUserModal = ({ showModal, onClose, meeting }) => {
             setError('Wystąpił błąd podczas zapisywania użytkownika.');
         }
     };
+
 
     return (
         <Modal show={showModal} onHide={onClose}>
