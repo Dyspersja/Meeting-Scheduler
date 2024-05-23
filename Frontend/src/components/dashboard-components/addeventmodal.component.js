@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import MeetingService from '../../services/meeting.service';
 
+
 const AddEventModal = ({ showModal, onClose, meeting, updateMeetingList }) => {
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
@@ -21,9 +22,12 @@ const AddEventModal = ({ showModal, onClose, meeting, updateMeetingList }) => {
                 setDate(new Date(meeting.dateTime).toLocaleDateString('en-CA'));
                 setTime(new Date(meeting.dateTime).toTimeString().substr(0, 5));
                 setDescription(meeting.description);
+            } else if (clickedDate) {
+                setDate(clickedDate.toLocaleDateString('en-CA'));
+                setTime(clickedDate.toTimeString().substr(0, 5));
             }
         }
-    }, [showModal, meeting]);
+    }, [showModal, meeting, clickedDate]);
 
     const clearForm = () => {
         setTitle('');
@@ -35,15 +39,15 @@ const AddEventModal = ({ showModal, onClose, meeting, updateMeetingList }) => {
     };
 
     const handleSave = async () => {
-        const dateTime = date + ' ' + time;
-        const dateParts = dateTime.split(" ");
-        const time1 = dateParts[1].split(":");
-        const date1 = dateParts[0].split("-");
-        const year = parseInt(date1[0]);
-        const month = parseInt(date1[1]) - 1;
-        const day = parseInt(date1[2]);
-        const hour = parseInt(time1[0]);
-        const minute = parseInt(time1[1]);
+        const dateTime = `${date} ${time}`;
+        const dateParts = dateTime.split(' ');
+        const timeParts = dateParts[1].split(':');
+        const datePartsArr = dateParts[0].split('-');
+        const year = parseInt(datePartsArr[0]);
+        const month = parseInt(datePartsArr[1]) - 1;
+        const day = parseInt(datePartsArr[2]);
+        const hour = parseInt(timeParts[0]);
+        const minute = parseInt(timeParts[1]);
 
         const dateObject = new Date(year, month, day, hour, minute);
 
