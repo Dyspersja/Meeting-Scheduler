@@ -42,61 +42,19 @@ public class EmailSenderService {
 
             helper.setTo(email);
             String subject = "Meeting notification!";
-            StringBuilder content = new StringBuilder("<html>" +
-                    "<head>" +
-                    "<style>" +
-                    "body {" +
-                    "    font-family: Arial, sans-serif;" +
-                    "    background-color: #f2f2f2;" +
-                    "    margin: 0;" +
-                    "    padding: 0;" +
-                    "}" +
-                    ".container {" +
-                    "    width: 600px;" +
-                    "    margin: 20px auto;" +
-                    "    background-color: #ffffff;" +
-                    "    padding: 20px;" +
-                    "    border-radius: 10px;" +
-                    "    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" +
-                    "}" +
-                    "p {" +
-                    "    margin-bottom: 10px;" +
-                    ".meeting {" +
-                    "    border: 1px solid #dddddd;" +
-                    "    padding: 10px;" +
-                    "    margin-bottom: 10px;" +
-                    "    border-radius: 5px;" +
-                    "    background-color: #f9f9f9;" +
-                    "    border-bottom: 1px solid #dddddd;}" +
-                    "</style>" +
-                    "</head>" +
-                    "<body>" +
-                    "<div class=\"container\">" +
-                    "<p>Dzień dobry,</p>" +
-                    "<p>Przypominamy o nadchodzących spotkaniach</p>");
-            for (Meeting meeting : meetingList) {
-                content.append("<div class=\"meeting\">")
-                        .append("<p><strong>Nazwa spotkania:</strong> ").append(meeting.getTitle()).append("</p>")
-                        .append("<p><strong>Godzina:</strong> ").append(meeting.getDateTime()).append("</p>")
-                        .append("<p><strong>Organizator:</strong> ").append(meeting.getOrganizer().getEmail()).append("</p>")
-                        .append("</div>")
-                        .append("<div style=\"border-top: 1px dotted #999999;\">&nbsp;</div>");
 
-            }
-            content.append("Pozdrawiamy" +
-                    "<div className = `navbar`><h1>Meeting<span>Scheduler</span></h1></div></div>" +
-                    "</body>" +
-                    "</html>");
+            EmailContentBuilder emailContentBuilder = EmailContentBuilder.builder();
+            meetingList.forEach(emailContentBuilder::addMeeting);
+            String content = emailContentBuilder.build();
 
             helper.setSubject(subject);
-            helper.setText(String.valueOf(content), true);
+            helper.setText(content, true);
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
             log.error("Email send error: {}", e.getMessage());
         }
     }
 
-    //    @Scheduled(cron = "0 0 1 * * *", zone = "Europe/Warsaw") // codziennie o 1 w nocy
     @Scheduled(fixedRate = 20000)
     public void checkMeetingDateAndSendNotifications() throws MessagingException {
         List<Meeting> meetingList = meetingRepository.findTodayMeetings();
