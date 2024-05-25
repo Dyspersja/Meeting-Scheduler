@@ -1,6 +1,7 @@
 package com.ismb.meetingscheduler.payload.Responses;
 
 import com.ismb.meetingscheduler.models.Attendee;
+import com.ismb.meetingscheduler.models.User;
 import lombok.*;
 
 @Getter
@@ -11,13 +12,13 @@ import lombok.*;
 public class AttendeeResponse {
     private Integer id;
     private int meetingId;
-    private Long userId;
+    private String attendeeEmail;
 
     public static AttendeeResponse fromAttendee(Attendee attendee) {
         return AttendeeResponse.builder()
                 .id(attendee.getId())
                 .meetingId(attendee.getMeetingId().getId())
-                .userId(attendee.getUserId().getId())
+                .attendeeEmail(attendee.getUserId().getEmail())
                 .build();
     }
 }

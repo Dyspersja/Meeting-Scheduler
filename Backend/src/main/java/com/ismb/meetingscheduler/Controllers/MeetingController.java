@@ -51,7 +51,7 @@ public class MeetingController {
                 .build();
 
         Meeting createdMeeting = meetingRepository.save(meeting);
-        return ResponseEntity.ok(MeetingResponse.fromMeeting(createdMeeting));
+        return ResponseEntity.ok(MeetingResponse.fromMeeting(createdMeeting, true));
     }
 
     @PutMapping("/{meetingId}")
@@ -76,7 +76,7 @@ public class MeetingController {
         meeting.setDateTime(request.getDateTime());
 
         Meeting updatedMeeting = meetingRepository.save(meeting);
-        return ResponseEntity.ok(MeetingResponse.fromMeeting(updatedMeeting));
+        return ResponseEntity.ok(MeetingResponse.fromMeeting(updatedMeeting, true));
     }
 
     @GetMapping
@@ -87,11 +87,11 @@ public class MeetingController {
         List<MeetingResponse> meetingResponseList = new ArrayList<>();
 
         meetingResponseList.addAll(organizerMeetingList.stream()
-                .map(MeetingResponse::fromMeeting)
+                .map(meeting -> MeetingResponse.fromMeeting(meeting, true))
                 .toList());
 
         meetingResponseList.addAll(attendeeMeetingList.stream()
-                .map(MeetingResponse::fromMeeting)
+                .map(meeting -> MeetingResponse.fromMeeting(meeting, false))
                 .toList());
 
         return ResponseEntity.ok(meetingResponseList);
@@ -114,6 +114,26 @@ public class MeetingController {
 
         meetingRepository.delete(meeting);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{meetingId}/attendee")
+    public ResponseEntity<List<AttendeeResponse>> getAttendees(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable long meetingId
+    ) {
+        Optional<Meeting> optionalMeeting = meetingRepository.findById(meetingId);
+        if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
+
+        Meeting meeting = optionalMeeting.get();
+
+        if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        
+        List<Attendee> attendeeList = attendeeRepository.findByMeetingIdId(meetingId);
+        List<AttendeeResponse> attendeeResponseList = attendeeList.stream()
+                .map(AttendeeResponse::fromAttendee).toList();
+
+        return ResponseEntity.ok(attendeeResponseList);
     }
 
     @PostMapping("/{meetingId}/attendee")
