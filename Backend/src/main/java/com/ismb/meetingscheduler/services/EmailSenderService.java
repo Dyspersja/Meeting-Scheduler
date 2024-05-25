@@ -1,12 +1,12 @@
 package com.ismb.meetingscheduler.services;
 
-
 import com.ismb.meetingscheduler.models.Meeting;
 import com.ismb.meetingscheduler.repository.AttendeeRepository;
 import com.ismb.meetingscheduler.repository.MeetingRepository;
 import com.ismb.meetingscheduler.repository.AccountRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -27,19 +27,13 @@ import java.util.List;
 @Slf4j
 @EnableScheduling
 
+@RequiredArgsConstructor
 public class EmailSenderService {
 
-    @Autowired
-    JavaMailSender javaMailSender;
-
-    @Autowired
-    MeetingRepository meetingRepository;
-
-    @Autowired
-    AttendeeRepository attendeeRepository;
-
-    @Autowired
-    AccountRepository userRepository;
+    private final JavaMailSender javaMailSender;
+    private final MeetingRepository meetingRepository;
+    private final AttendeeRepository attendeeRepository;
+    private final AccountRepository userRepository;
 
     @Async
     public void sendEmail(String email, String meetingTitle, Date meetingDate) throws MessagingException {
@@ -83,12 +77,11 @@ public class EmailSenderService {
             helper.setText(content, true);
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
-            System.err.println("Wysyłanie zakończone błędem. Błąd: " + e.getMessage());
-            throw e;
+            log.error("Email send error: {}", e.getMessage());
         }
     }
 
-    @Scheduled(cron = "0 0 1 * * *", zone = "Europe/Warsaw") // o 1 w nocy codziennie
+    @Scheduled(cron = "0 0 1 * * *", zone = "Europe/Warsaw")
     public void checkMeetingDateAndSendNotifications() throws MessagingException {
         Timestamp currentDay = Timestamp.from(Instant.now());
         Timestamp nextDay = Timestamp.from(currentDay.toInstant().plus(Duration.ofDays(1)));
@@ -103,6 +96,4 @@ public class EmailSenderService {
             }
         }
     }
-
-
 }

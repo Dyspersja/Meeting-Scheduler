@@ -22,7 +22,6 @@ public class JwtUtils {
     private int jwtExpirationMs;
 
     public String generateJwtToken(String email) {
-
         return Jwts.builder()
                 .setSubject((email))
                 .setIssuedAt(new Date())
@@ -42,7 +41,7 @@ public class JwtUtils {
 
     public boolean validateJwtToken(String authToken) {
         SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-        try{
+        try {
             Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(authToken);
             return true;
         } catch (MalformedJwtException e) {

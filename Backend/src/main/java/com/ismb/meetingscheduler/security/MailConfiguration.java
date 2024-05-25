@@ -35,7 +35,6 @@ public class MailConfiguration {
     @Value("${spring.mail.properties.mail.smtp.ssl.trust}")
     private String mailSmtpSslTrust;
 
-
     @Bean
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -52,5 +51,4 @@ public class MailConfiguration {
 
         return mailSender;
     }
-
 }
