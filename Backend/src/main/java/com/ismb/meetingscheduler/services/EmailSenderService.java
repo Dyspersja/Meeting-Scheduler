@@ -55,7 +55,7 @@ public class EmailSenderService {
         }
     }
 
-    @Scheduled(fixedRate = 20000)
+    @Scheduled(cron = "0 0 1 * * *", zone = "Europe/Warsaw")
     public void checkMeetingDateAndSendNotifications() throws MessagingException {
         List<Meeting> meetingList = meetingRepository.findTodayMeetings();
         Map<Long, List<Meeting>> userMeetingsMap = new HashMap<>();
