@@ -23,16 +23,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-
-
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/meeting")
+
 @RequiredArgsConstructor
 public class MeetingController {
 
     private final MeetingRepository meetingRepository;
-    private final AccountRepository userRepository;
+    private final AccountRepository accountRepository;
     private final AttendeeRepository attendeeRepository;
 
     @PostMapping
@@ -147,7 +146,7 @@ public class MeetingController {
         if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
 
         // Only registered attendees can be added.
-        Optional<Account> optionalAttendee = userRepository.findByEmail(attendeeRequest.getEmail());
+        Optional<Account> optionalAttendee = accountRepository.findByEmail(attendeeRequest.getEmail());
         if(optionalAttendee.isEmpty()) return ResponseEntity.notFound().build();
 
         Meeting meeting = optionalMeeting.get();
@@ -185,7 +184,7 @@ public class MeetingController {
         if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
 
         // Attendee to remove must exist
-        Optional<Account> optionalUser = userRepository.findByEmail(attendeeRequest.getEmail());
+        Optional<Account> optionalUser = accountRepository.findByEmail(attendeeRequest.getEmail());
         if(optionalUser.isEmpty()) return ResponseEntity.notFound().build();
 
         Account user = optionalUser.get();
