@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faBars, faTimes} from '@fortawesome/free-solid-svg-icons';
 import AuthService from "../services/auth.service";
 import EventBus from "../common/EventBus";
+import InfoModal from './navbar-components/info.modal';
 
 import '../styles/layouts.css';
 
@@ -64,7 +65,7 @@ class Navbar extends Component {
             </div>
             <div className='list'>
               <ul>
-                <li><NavLink to="/info">Informacje</NavLink></li>
+                <li><InfoModal>Informacje</InfoModal></li>
                 {currentUser ? (
                     <li className='auth'><NavLink onClick={this.logOut}>Wyloguj się</NavLink></li>
                 ) : (
