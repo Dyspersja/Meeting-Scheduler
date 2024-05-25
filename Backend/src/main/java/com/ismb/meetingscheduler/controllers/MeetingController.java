@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +43,7 @@ public class MeetingController {
     ) {
         Meeting meeting = Meeting.builder()
                 .title(request.getTitle())
-                .dateTime(request.getDateTime())
+                .dateTime(Timestamp.valueOf(request.getDateTime().toLocalDateTime().minusHours(2)))
                 .description(request.getDescription())
                 .location(request.getLocation())
                 .organizer(Account.builder()
@@ -72,7 +74,7 @@ public class MeetingController {
         meeting.setTitle(request.getTitle());
         meeting.setDescription(request.getDescription());
         meeting.setLocation(request.getLocation());
-        meeting.setDateTime(request.getDateTime());
+        meeting.setDateTime(Timestamp.valueOf(request.getDateTime().toLocalDateTime().minusHours(2)));
 
         Meeting updatedMeeting = meetingRepository.save(meeting);
         return ResponseEntity.ok(MeetingResponse.fromMeeting(updatedMeeting, true));

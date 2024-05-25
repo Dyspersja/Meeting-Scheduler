@@ -1,15 +1,15 @@
 .dashboard{
     margin: 30px;
+    width: 95vw;
 }
 
 .left-panel {
     display: inline-block; 
     float: left;
     width: 28%;
-    height: 40rem;
+    height: 80vh;
     vertical-align: top;
     padding: 0 20px;
-    padding-right: 0;
     margin: 30px 0;
 }
 
@@ -38,11 +38,12 @@
 }
 
 .meeting-item.red {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.7);
 }
 
 .meeting-item.green {
-    background-color: green;
+    background-color: rgba(24, 140, 0, 0.8);
+
 }
 
 .meeting-item p {
@@ -119,6 +120,13 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+.planner-title-text{
+    /*font-size: 15px;*/
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+}
+
 .calendar {
     vertical-align: top;
     display: inline-block; 
@@ -126,9 +134,8 @@
     background-color: #fff;
     color: #5e5e5e;
     width: 65%;
-    padding: 30px;
     padding-left: 10px;
-    margin: 30px;
+    margin: 10px;
     border-radius: 15px;
     border-spacing: 0; 
 }
@@ -224,4 +231,39 @@ select {
 select:hover{
     border: 1px solid #dad1d1;
     border-radius: 5px;
+}
+
+@media (max-width: 1024px) {
+    .dashboard{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    .left-panel{
+        margin-top: 20px;
+        width: 97vw;
+        height: 30vw;
+        padding: 0;
+        position: relative;
+    }
+    .meeting-item{
+        width: 95%;
+        margin: 10px 0 0;
+
+    }
+    .planner
+    {
+        margin-top: 10px;
+        width: 90vw;
+        display: ruby-text;
+    }
+    .calendar{
+        padding-left: 0;
+        margin: 80px 0 0;
+        position: relative;
+        width: 90vw;
+        float: left;
+        text-align: center;
+    }
+
 }
