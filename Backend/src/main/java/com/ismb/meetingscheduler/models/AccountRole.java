@@ -1,6 +1,6 @@
 package com.ismb.meetingscheduler.models;
 
-public enum ERole {
+public enum AccountRole {
     ROLE_USER,
     ROLE_MODERATOR,
     ROLE_ADMIN

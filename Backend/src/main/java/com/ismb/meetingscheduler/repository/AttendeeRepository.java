@@ -12,9 +12,10 @@ import java.util.List;
 @EnableJpaRepositories
 public interface AttendeeRepository extends JpaRepository<Attendee, Long> {
 
+    boolean existsByMeetingIdAndAccountId(Long meetingId, Long accountId);
+    Optional<Attendee> findByMeetingIdAndAccountId(Long meetingId, Long accountId);
+    List<Attendee> findByMeetingId(Long meetingId);
+
     @Query(value = "SELECT account_id FROM Attendee attendee WHERE attendee.meeting_id = ?1", nativeQuery = true)
     List<Long> getAllAttendeeIdsByMeetingId(Integer meetingId);
-    boolean existsByMeetingIdIdAndUserIdId(Long meetingId, Long accountId);
-    Optional<Attendee> findByMeetingIdIdAndUserIdId(Long meetingId, Long accountId);
-    List<Attendee> findByMeetingIdId(Long meetingId);
 }

@@ -12,8 +12,9 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 public class Meeting {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
@@ -31,5 +32,5 @@ public class Meeting {
 
     @ManyToOne
     @JoinColumn(name = "organizer_id",referencedColumnName = "id")
-    private Account organizerId;
+    private Account organizer;
 }

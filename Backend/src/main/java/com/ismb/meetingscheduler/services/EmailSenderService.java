@@ -4,7 +4,7 @@ package com.ismb.meetingscheduler.services;
 import com.ismb.meetingscheduler.models.Meeting;
 import com.ismb.meetingscheduler.repository.AttendeeRepository;
 import com.ismb.meetingscheduler.repository.MeetingRepository;
-import com.ismb.meetingscheduler.repository.UserRepository;
+import com.ismb.meetingscheduler.repository.AccountRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class EmailSenderService {
     AttendeeRepository attendeeRepository;
 
     @Autowired
-    UserRepository userRepository;
+    AccountRepository userRepository;
 
     @Async
     public void sendEmail(String email, String meetingTitle, Date meetingDate) throws MessagingException {

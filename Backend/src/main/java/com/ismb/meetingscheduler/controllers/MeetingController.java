@@ -11,7 +11,7 @@ import com.ismb.meetingscheduler.payload.responses.MeetingResponse;
 
 import com.ismb.meetingscheduler.repository.AttendeeRepository;
 import com.ismb.meetingscheduler.repository.MeetingRepository;
-import com.ismb.meetingscheduler.repository.UserRepository;
+import com.ismb.meetingscheduler.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ import java.util.Optional;
 public class MeetingController {
 
     private final MeetingRepository meetingRepository;
-    private final UserRepository userRepository;
+    private final AccountRepository userRepository;
     private final AttendeeRepository attendeeRepository;
 
     @PostMapping
@@ -45,7 +45,7 @@ public class MeetingController {
                 .dateTime(request.getDateTime())
                 .description(request.getDescription())
                 .location(request.getLocation())
-                .organizerId(Account.builder()
+                .organizer(Account.builder()
                         .id(userDetails.getId())
                         .build())
                 .build();
@@ -67,7 +67,7 @@ public class MeetingController {
         Meeting meeting = optionalMeeting.get();
 
         // Only the organizer of the meeting can update it.
-        if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+        if(!Objects.equals(meeting.getOrganizer().getId(), userDetails.getId()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         meeting.setTitle(request.getTitle());
@@ -81,7 +81,7 @@ public class MeetingController {
 
     @GetMapping
     public ResponseEntity<List<MeetingResponse>> getAllMeetings(@AuthenticationPrincipal AuthenticatedUser userDetails) {
-        List<Meeting> organizerMeetingList = meetingRepository.findByOrganizerIdId(userDetails.getId());
+        List<Meeting> organizerMeetingList = meetingRepository.findByOrganizerId(userDetails.getId());
         List<Meeting> attendeeMeetingList = meetingRepository.findByAttendeeId(userDetails.getId());
 
         List<MeetingResponse> meetingResponseList = new ArrayList<>();
@@ -109,7 +109,7 @@ public class MeetingController {
         Meeting meeting = optionalMeeting.get();
 
         // Only the organizer of the meeting can delete it.
-        if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+        if(!Objects.equals(meeting.getOrganizer().getId(), userDetails.getId()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to delete this meeting.");
 
         meetingRepository.delete(meeting);
@@ -126,10 +126,10 @@ public class MeetingController {
 
         Meeting meeting = optionalMeeting.get();
 
-        if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+        if(!Objects.equals(meeting.getOrganizer().getId(), userDetails.getId()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         
-        List<Attendee> attendeeList = attendeeRepository.findByMeetingIdId(meetingId);
+        List<Attendee> attendeeList = attendeeRepository.findByMeetingId(meetingId);
         List<AttendeeResponse> attendeeResponseList = attendeeList.stream()
                 .map(AttendeeResponse::fromAttendee).toList();
 
@@ -154,20 +154,20 @@ public class MeetingController {
         Account user = optionalAttendee.get();
 
         // Only the meeting organizer can add attendees.
-        if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+        if(!Objects.equals(meeting.getOrganizer().getId(), userDetails.getId()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         // The organizer cannot invite themselves to the meeting.
-        if(Objects.equals(meeting.getOrganizerId().getId(), user.getId()))
+        if(Objects.equals(meeting.getOrganizer().getId(), user.getId()))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         // The organizer cannot add the same attendee twice to the same meeting.
-        if(attendeeRepository.existsByMeetingIdIdAndUserIdId(meetingId, user.getId()))
+        if(attendeeRepository.existsByMeetingIdAndAccountId(meetingId, user.getId()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Attendee attendee = Attendee.builder()
-                .meetingId(meeting)
-                .userId(user)
+                .meeting(meeting)
+                .account(user)
                 .build();
 
         Attendee newAttendee = attendeeRepository.save(attendee);
@@ -192,11 +192,11 @@ public class MeetingController {
         Meeting meeting = optionalMeeting.get();
 
         // Only the meeting organizer can remove attendees.
-        if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
+        if(!Objects.equals(meeting.getOrganizer().getId(), userDetails.getId()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         // Attendee must be added to meeting to be removed.
-        Optional<Attendee> optionalAttendee = attendeeRepository.findByMeetingIdIdAndUserIdId(meetingId, user.getId());
+        Optional<Attendee> optionalAttendee = attendeeRepository.findByMeetingIdAndAccountId(meetingId, user.getId());
         if(optionalAttendee.isEmpty()) return ResponseEntity.notFound().build();
 
         Attendee attendee = optionalAttendee.get();

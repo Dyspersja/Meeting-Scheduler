@@ -15,14 +15,6 @@ public class Role {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(length=20)
-    private ERole name;
-
-    public Role(){
-
-    }
-
-    public Role(ERole name){
-        this.name = name;
-    }
+    @Column(length = 20)
+    private AccountRole name;
 }

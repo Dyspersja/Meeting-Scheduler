@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class AttendeeResponse {
+
     private Integer id;
     private int meetingId;
     private String attendeeEmail;
@@ -16,8 +17,8 @@ public class AttendeeResponse {
     public static AttendeeResponse fromAttendee(Attendee attendee) {
         return AttendeeResponse.builder()
                 .id(attendee.getId())
-                .meetingId(attendee.getMeetingId().getId())
-                .attendeeEmail(attendee.getUserId().getEmail())
+                .meetingId(attendee.getMeeting().getId())
+                .attendeeEmail(attendee.getAccount().getEmail())
                 .build();
     }
 }

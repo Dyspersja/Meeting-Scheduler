@@ -4,7 +4,7 @@ package com.ismb.meetingscheduler.security.services;
 import com.ismb.meetingscheduler.exception.TokenRefreshException;
 import com.ismb.meetingscheduler.models.RefreshToken;
 import com.ismb.meetingscheduler.repository.RefreshTokenRepository;
-import com.ismb.meetingscheduler.repository.UserRepository;
+import com.ismb.meetingscheduler.repository.AccountRepository;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class RefreshTokenService {
     RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
-    UserRepository userRepository;
+    AccountRepository userRepository;
     public Optional<RefreshToken> findByToken(String token){
         return refreshTokenRepository.findByToken(token);
     }
@@ -33,7 +33,7 @@ public class RefreshTokenService {
     public RefreshToken createRefreshToken(Long userId){
         RefreshToken refreshToken = new RefreshToken();
 
-        refreshToken.setUser(userRepository.findById(userId).get());
+        refreshToken.setAccount(userRepository.findById(userId).get());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
 
@@ -50,7 +50,7 @@ public class RefreshTokenService {
 
     @Transactional
     public int deleteByUserId(Long userId){
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+        return refreshTokenRepository.deleteByAccount(userRepository.findById(userId).get());
     }
 
 

@@ -5,7 +5,7 @@ import com.ismb.meetingscheduler.exception.TokenRefreshException;
 import com.ismb.meetingscheduler.security.jwt.JwtUtils;
 import com.ismb.meetingscheduler.security.services.RefreshTokenService;
 import com.ismb.meetingscheduler.security.services.AuthenticatedUser;
-import com.ismb.meetingscheduler.models.ERole;
+import com.ismb.meetingscheduler.models.AccountRole;
 import com.ismb.meetingscheduler.models.RefreshToken;
 import com.ismb.meetingscheduler.models.Role;
 import com.ismb.meetingscheduler.models.Account;
@@ -17,7 +17,7 @@ import com.ismb.meetingscheduler.payload.responses.MessageResponse;
 import com.ismb.meetingscheduler.payload.responses.TokenRefreshResponse;
 import com.ismb.meetingscheduler.repository.RefreshTokenRepository;
 import com.ismb.meetingscheduler.repository.RoleRepository;
-import com.ismb.meetingscheduler.repository.UserRepository;
+import com.ismb.meetingscheduler.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -44,7 +44,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    AccountRepository userRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -66,7 +66,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Błędne dane logowania");
         } else {
 
-            if (refreshTokenRepository.findByUser(userRepository.findByEmail(loginRequest.getEmail()).get()).isPresent()) {
+            if (refreshTokenRepository.findByAccount(userRepository.findByEmail(loginRequest.getEmail()).get()).isPresent()) {
                 refreshTokenService.deleteByUserId(userRepository.findByEmail(loginRequest.getEmail()).get().getId());
             }
             Authentication authentication = authenticationManager.authenticate(
@@ -92,7 +92,7 @@ public class AuthController {
         String requestRefreshToken = request.getRefreshToken();
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getUser)
+                .map(RefreshToken::getAccount)
                 .map(user->{
                     String token = jwtUtils.generateJwtToken(user.getEmail());
                     return ResponseEntity.ok(new TokenRefreshResponse(token,requestRefreshToken));
@@ -117,7 +117,7 @@ public class AuthController {
         }
 
         Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findByName(ERole.ROLE_USER));
+        roles.add(roleRepository.findByName(AccountRole.ROLE_USER));
 
         Account user = Account.builder()
                 .email(signUpRequest.getEmail())

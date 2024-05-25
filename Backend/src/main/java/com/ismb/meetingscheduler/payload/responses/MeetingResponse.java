@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 public class MeetingResponse {
+
     private int id;
     private String title;
     private String description;
@@ -26,7 +27,7 @@ public class MeetingResponse {
                 .description(meeting.getDescription())
                 .dateTime(meeting.getDateTime())
                 .location(meeting.getLocation())
-                .organizerId(meeting.getOrganizerId().getId())
+                .organizerId(meeting.getOrganizer().getId())
                 .isOwner(isOwner)
                 .build();
     }

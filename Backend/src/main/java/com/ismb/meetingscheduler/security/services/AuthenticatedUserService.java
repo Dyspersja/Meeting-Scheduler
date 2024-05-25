@@ -2,7 +2,7 @@ package com.ismb.meetingscheduler.security.services;
 
 import com.ismb.meetingscheduler.models.Account;
 
-import com.ismb.meetingscheduler.repository.UserRepository;
+import com.ismb.meetingscheduler.repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticatedUserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final AccountRepository userRepository;
 
     @Override
     @Transactional
