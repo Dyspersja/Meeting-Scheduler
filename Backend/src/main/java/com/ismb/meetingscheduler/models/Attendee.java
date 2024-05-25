@@ -21,10 +21,9 @@ public class Attendee {
 
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private User userId;
+    private Account userId;
 
 
     @Column(name = "status", length = 20)
     private String status;
-
 }

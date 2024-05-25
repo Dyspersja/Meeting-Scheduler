@@ -3,7 +3,7 @@ package com.ismb.meetingscheduler.controllers;
 import com.ismb.meetingscheduler.security.services.UserDetailsImpl;
 import com.ismb.meetingscheduler.models.Attendee;
 import com.ismb.meetingscheduler.models.Meeting;
-import com.ismb.meetingscheduler.models.User;
+import com.ismb.meetingscheduler.models.Account;
 import com.ismb.meetingscheduler.payload.requests.AttendeeRequest;
 import com.ismb.meetingscheduler.payload.requests.MeetingRequest;
 import com.ismb.meetingscheduler.payload.responses.AttendeeResponse;
@@ -45,7 +45,7 @@ public class MeetingController {
                 .dateTime(request.getDateTime())
                 .description(request.getDescription())
                 .location(request.getLocation())
-                .organizerId(User.builder()
+                .organizerId(Account.builder()
                         .id(userDetails.getId())
                         .build())
                 .build();
@@ -147,11 +147,11 @@ public class MeetingController {
         if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
 
         // Only registered attendees can be added.
-        Optional<User> optionalAttendee = userRepository.findByEmail(attendeeRequest.getEmail());
+        Optional<Account> optionalAttendee = userRepository.findByEmail(attendeeRequest.getEmail());
         if(optionalAttendee.isEmpty()) return ResponseEntity.notFound().build();
 
         Meeting meeting = optionalMeeting.get();
-        User user = optionalAttendee.get();
+        Account user = optionalAttendee.get();
 
         // Only the meeting organizer can add attendees.
         if(!Objects.equals(meeting.getOrganizerId().getId(), userDetails.getId()))
@@ -185,10 +185,10 @@ public class MeetingController {
         if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
 
         // Attendee to remove must exist
-        Optional<User> optionalUser = userRepository.findByEmail(attendeeRequest.getEmail());
+        Optional<Account> optionalUser = userRepository.findByEmail(attendeeRequest.getEmail());
         if(optionalUser.isEmpty()) return ResponseEntity.notFound().build();
 
-        User user = optionalUser.get();
+        Account user = optionalUser.get();
         Meeting meeting = optionalMeeting.get();
 
         // Only the meeting organizer can remove attendees.

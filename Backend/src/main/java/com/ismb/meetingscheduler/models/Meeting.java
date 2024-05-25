@@ -31,5 +31,5 @@ public class Meeting {
 
     @ManyToOne
     @JoinColumn(name = "organizer_id",referencedColumnName = "id")
-    private User organizerId;
+    private Account organizerId;
 }

@@ -8,7 +8,7 @@ import com.ismb.meetingscheduler.security.services.UserDetailsImpl;
 import com.ismb.meetingscheduler.models.ERole;
 import com.ismb.meetingscheduler.models.RefreshToken;
 import com.ismb.meetingscheduler.models.Role;
-import com.ismb.meetingscheduler.models.User;
+import com.ismb.meetingscheduler.models.Account;
 import com.ismb.meetingscheduler.payload.requests.LoginRequest;
 import com.ismb.meetingscheduler.payload.requests.SignupRequest;
 import com.ismb.meetingscheduler.payload.requests.TokenRefreshRequest;
@@ -116,14 +116,15 @@ public class AuthController {
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
-        User user = new User(signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
-
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findByName(ERole.ROLE_USER));
 
+        Account user = Account.builder()
+                .email(signUpRequest.getEmail())
+                .password(encoder.encode(signUpRequest.getPassword()))
+                .roles(roles)
+                .build();
 
-        user.setRoles(roles);
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

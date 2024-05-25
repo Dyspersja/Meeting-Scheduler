@@ -1,6 +1,5 @@
 package com.ismb.meetingscheduler.models;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(name = "account")
-public class User {
+public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
@@ -23,19 +22,17 @@ public class User {
 
     @Column(nullable = false)
     private String email;
+
     @Column(nullable = false)
     @JsonIgnore
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "accounts_roles",
-    joinColumns =  @JoinColumn(name = "account_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(
+        name = "accounts_roles",
+        joinColumns =  @JoinColumn(name = "account_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 }

@@ -1,6 +1,6 @@
 package com.ismb.meetingscheduler.security.services;
 
-import com.ismb.meetingscheduler.models.User;
+import com.ismb.meetingscheduler.models.Account;
 
 import com.ismb.meetingscheduler.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -20,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
+        Account user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
 
         return UserDetailsImpl.build(user);
