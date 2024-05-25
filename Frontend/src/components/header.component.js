@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import {faBars, faTimes} from '@fortawesome/free-solid-svg-icons';
 import AuthService from "../services/auth.service";
 import EventBus from "../common/EventBus";
 
@@ -48,26 +48,30 @@ class Navbar extends Component {
       <div style={{ marginBottom: "70px" }}>
         <nav>
           <button
-            className={`menu-icon ${menuOpen ? 'open' : ''}`}
-            onClick={this.toggleMenu}
-            aria-label="Toggle Menu"
+              className={`menu-icon ${menuOpen ? 'open' : ''}`}
+              onClick={this.toggleMenu}
+              aria-label="Toggle Menu"
           >
-            <FontAwesomeIcon icon={faBars} style={{ color: "white", fontSize: "20px" }} />
+            {menuOpen ? (
+                <FontAwesomeIcon icon={faTimes} style={{color: "white", fontSize: "20px"}}/>
+            ) : (
+                <FontAwesomeIcon icon={faBars} style={{color: "white", fontSize: "20px"}}/>
+            )}
           </button>
           <div className={`navbar ${menuOpen ? 'open' : ''}`}>
             <div>
-              <NavLink to="/"><h1>Meeting<span>Scheduler</span></h1></NavLink>
+              <NavLink to="/index"><h1>Meeting<span>Scheduler</span></h1></NavLink>
             </div>
             <div className='list'>
               <ul>
                 <li><NavLink to="/info">Informacje</NavLink></li>
                 {currentUser ? (
-                  <li className='auth'><NavLink onClick={this.logOut}>Wyloguj się</NavLink></li>
+                    <li className='auth'><NavLink onClick={this.logOut}>Wyloguj się</NavLink></li>
                 ) : (
-                  <>
-                    <li className='auth'><NavLink to="/login">Zaloguj się</NavLink></li>
-                    <li className='auth'><NavLink to="/register">Stwórz konto</NavLink></li>
-                  </>
+                    <>
+                      <li className='auth'><NavLink to="/login">Zaloguj się</NavLink></li>
+                      <li className='auth'><NavLink to="/register">Stwórz konto</NavLink></li>
+                    </>
                 )}
               </ul>
             </div>

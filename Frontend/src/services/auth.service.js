@@ -42,6 +42,7 @@ class AuthService {
     }
 
     refreshToken() {
+        console.log()
         return new Promise((resolve, reject) => {
             axios.post('http://localhost:8080/api/auth/refreshtoken', {refreshToken: this.getLocalRefreshToken()})
                 .then((response) => {
