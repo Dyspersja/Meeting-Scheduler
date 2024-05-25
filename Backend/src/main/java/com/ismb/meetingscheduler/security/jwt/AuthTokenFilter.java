@@ -1,6 +1,6 @@
 package com.ismb.meetingscheduler.security.jwt;
 
-import com.ismb.meetingscheduler.security.services.UserDetailsServiceImpl;
+import com.ismb.meetingscheduler.security.services.AuthenticatedUserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         private JwtUtils jwtUtils;
 
         @Autowired
-        private UserDetailsServiceImpl userDetailsService;
+        private AuthenticatedUserService userDetailsService;
 
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

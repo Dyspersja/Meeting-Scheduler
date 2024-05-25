@@ -4,26 +4,24 @@ import com.ismb.meetingscheduler.models.Account;
 
 import com.ismb.meetingscheduler.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-
-
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    UserRepository userRepository;
+@RequiredArgsConstructor
+public class AuthenticatedUserService implements UserDetailsService {
+
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
+        Account user = userRepository.findByEmail(email).orElseThrow(() ->
+                new UsernameNotFoundException("User Not Found with username: " + email));
 
-        return UserDetailsImpl.build(user);
+        return AuthenticatedUser.build(user);
     }
-
 }

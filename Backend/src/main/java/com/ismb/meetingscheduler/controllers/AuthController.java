@@ -4,7 +4,7 @@ package com.ismb.meetingscheduler.controllers;
 import com.ismb.meetingscheduler.exception.TokenRefreshException;
 import com.ismb.meetingscheduler.security.jwt.JwtUtils;
 import com.ismb.meetingscheduler.security.services.RefreshTokenService;
-import com.ismb.meetingscheduler.security.services.UserDetailsImpl;
+import com.ismb.meetingscheduler.security.services.AuthenticatedUser;
 import com.ismb.meetingscheduler.models.ERole;
 import com.ismb.meetingscheduler.models.RefreshToken;
 import com.ismb.meetingscheduler.models.Role;
@@ -73,7 +73,7 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            AuthenticatedUser userDetails = (AuthenticatedUser) authentication.getPrincipal();
 
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)

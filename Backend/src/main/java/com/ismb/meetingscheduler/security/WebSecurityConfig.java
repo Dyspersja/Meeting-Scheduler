@@ -2,7 +2,7 @@ package com.ismb.meetingscheduler.security;
 
 import com.ismb.meetingscheduler.security.jwt.AuthEntryPointJwt;
 import com.ismb.meetingscheduler.security.jwt.AuthTokenFilter;
-import com.ismb.meetingscheduler.security.services.UserDetailsServiceImpl;
+import com.ismb.meetingscheduler.security.services.AuthenticatedUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class WebSecurityConfig {
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    AuthenticatedUserService userDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;

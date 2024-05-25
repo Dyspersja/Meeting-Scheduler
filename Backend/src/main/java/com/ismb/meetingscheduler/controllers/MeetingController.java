@@ -1,6 +1,6 @@
 package com.ismb.meetingscheduler.controllers;
 
-import com.ismb.meetingscheduler.security.services.UserDetailsImpl;
+import com.ismb.meetingscheduler.security.services.AuthenticatedUser;
 import com.ismb.meetingscheduler.models.Attendee;
 import com.ismb.meetingscheduler.models.Meeting;
 import com.ismb.meetingscheduler.models.Account;
@@ -37,7 +37,7 @@ public class MeetingController {
 
     @PostMapping
     public ResponseEntity<MeetingResponse> createMeeting(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal AuthenticatedUser userDetails,
             @RequestBody MeetingRequest request
     ) {
         Meeting meeting = Meeting.builder()
@@ -56,7 +56,7 @@ public class MeetingController {
 
     @PutMapping("/{meetingId}")
     public ResponseEntity<MeetingResponse> updateMeeting(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal AuthenticatedUser userDetails,
             @PathVariable long meetingId,
             @RequestBody MeetingRequest request
     ) {
@@ -80,7 +80,7 @@ public class MeetingController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MeetingResponse>> getAllMeetings(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<MeetingResponse>> getAllMeetings(@AuthenticationPrincipal AuthenticatedUser userDetails) {
         List<Meeting> organizerMeetingList = meetingRepository.findByOrganizerIdId(userDetails.getId());
         List<Meeting> attendeeMeetingList = meetingRepository.findByAttendeeId(userDetails.getId());
 
@@ -99,7 +99,7 @@ public class MeetingController {
 
     @DeleteMapping("/{meetingId}")
     public ResponseEntity<?> deleteMeeting(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal AuthenticatedUser userDetails,
             @PathVariable long meetingId
     ) {
         // The meeting must exist in order to be deleted.
@@ -118,7 +118,7 @@ public class MeetingController {
 
     @GetMapping("/{meetingId}/attendee")
     public ResponseEntity<List<AttendeeResponse>> getAttendees(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal AuthenticatedUser userDetails,
             @PathVariable long meetingId
     ) {
         Optional<Meeting> optionalMeeting = meetingRepository.findById(meetingId);
@@ -138,7 +138,7 @@ public class MeetingController {
 
     @PostMapping("/{meetingId}/attendee")
     public ResponseEntity<AttendeeResponse> addAttendee(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal AuthenticatedUser userDetails,
             @PathVariable long meetingId,
             @RequestBody AttendeeRequest attendeeRequest
     ) {
@@ -176,7 +176,7 @@ public class MeetingController {
 
     @DeleteMapping("/{meetingId}/attendee")
     public ResponseEntity<AttendeeResponse> deleteAttendee(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @AuthenticationPrincipal AuthenticatedUser userDetails,
             @PathVariable long meetingId,
             @RequestBody AttendeeRequest attendeeRequest
     ) {
@@ -206,7 +206,7 @@ public class MeetingController {
     }
 
     @GetMapping("/getTodayMeetings")
-    public List<Meeting> findTodayMeetings(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public List<Meeting> findTodayMeetings(@AuthenticationPrincipal AuthenticatedUser userDetails){
         return meetingRepository.findTodayMeetingsByOrganizerId(userDetails.getId());
     }
 }
