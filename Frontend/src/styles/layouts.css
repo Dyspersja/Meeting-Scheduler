@@ -73,7 +73,6 @@ nav {
     border-radius: 5px;
     right: 0;
     position: absolute;
-    transition: transform 0.3s ease; /* Dodajemy animację */
   }
 
   .menu-icon span {
@@ -82,7 +81,6 @@ nav {
     height: 3px;
     background-color: white;
     margin-bottom: 5px;
-    transition: transform 0.3s ease;
   }
 
   .menu-icon.open span:nth-child(1) {
@@ -93,9 +91,6 @@ nav {
     opacity: 0;
   }
 
-  .menu-icon.open span:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
-  }
 
   .navbar {
     display: flex;
@@ -108,7 +103,6 @@ nav {
     padding: 30px; 
     border-radius: 0 0 5px;
     z-index: -1;
-    transition: left 0.5s ease;
   }
 
   .navbar.open {
