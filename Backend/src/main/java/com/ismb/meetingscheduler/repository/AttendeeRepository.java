@@ -16,4 +16,5 @@ public interface AttendeeRepository extends JpaRepository<Attendee, Long> {
     List<Long> getAllAttendeeIdsByMeetingId(Integer meetingId);
     boolean existsByMeetingIdIdAndUserIdId(Long meetingId, Long accountId);
     Optional<Attendee> findByMeetingIdIdAndUserIdId(Long meetingId, Long accountId);
+    List<Attendee> findByMeetingIdId(Long meetingId);
 }

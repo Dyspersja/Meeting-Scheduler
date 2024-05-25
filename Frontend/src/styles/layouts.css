@@ -105,6 +105,7 @@ nav {
     left: -200vw;
     top: 0;
     width: 102vw;
+    padding: 30px; 
     border-radius: 0 0 5px;
     z-index: -1;
     transition: left 0.5s ease;
