@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-
-
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -23,6 +21,4 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     List<Meeting> findTodayMeetingsByOrganizerId(Long organizerId);
     @Query(value = "SELECT * FROM meeting WHERE DATE(date_time) = CURDATE() order by date_time", nativeQuery = true)
     List<Meeting> findTodayMeetings();
-
-
 }
