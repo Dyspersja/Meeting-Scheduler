@@ -13,11 +13,12 @@ import java.util.List;
 @EnableJpaRepositories
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
-    @Query("SELECT m FROM Meeting m JOIN Attendee a ON m.id = a.meetingId.id WHERE a.userId.id = :attendeeId")
+    List<Meeting> findByOrganizerId(Long organizerId);
+
+    @Query("SELECT m FROM Meeting m JOIN Attendee a ON m.id = a.meeting.id WHERE a.account.id = :attendeeId")
     List<Meeting> findByAttendeeId(Long attendeeId);
-    List<Meeting> findByOrganizerIdId(Long organizerId);
-
-
+    @Query(value = "Select * from meeting where date_time between ?1 and ?2", nativeQuery = true)
+    List<Meeting> getNextDayMeetings(Timestamp currentDate, Timestamp nextDay);
     @Query(value = "SELECT * FROM meeting WHERE DATE(date_time) = CURDATE() AND organizer_id = ?1 order by date_time", nativeQuery = true)
     List<Meeting> findTodayMeetingsByOrganizerId(Long organizerId);
     @Query(value = "SELECT * FROM meeting WHERE DATE(date_time) = CURDATE() order by date_time", nativeQuery = true)

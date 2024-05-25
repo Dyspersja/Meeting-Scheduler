@@ -10,21 +10,20 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Attendee {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "meeting_id",referencedColumnName = "id")
-    private Meeting meetingId;
+    @JoinColumn(name = "meeting_id", referencedColumnName = "id")
+    private Meeting meeting;
 
     @ManyToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private User userId;
-
+    private Account account;
 
     @Column(name = "status", length = 20)
     private String status;
-
 }
