@@ -24,6 +24,7 @@ Meeting Scheduler to aplikacja do zarządzania spotkaniami. Pozwala użytkowniko
 - Frontend
 - Utworzenie Readme
 
+
 ### [Jagoda Straszewska](https://github.com/jag00d)
 
 #### Odpowiedzialna za
