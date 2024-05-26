@@ -20,12 +20,6 @@ class Dashboard extends Component {
         this.updateTodayMeetingList();
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if (prevState.meetings !== this.state.meetings) {
-            this.updateMeetingList();
-        }
-    }
-
     updateMeetingList = () => {
         meetingService.getAllMeetings()
             .then(meetings => {
@@ -58,7 +52,7 @@ class Dashboard extends Component {
         return (
             <div className='dashboard'>
                 <LeftPanel openModal={this.openModal} updateMeetingList={this.updateMeetingList} />
-                <Calendar meetings={this.state.meetings} />
+                <Calendar meetings={this.state.meetings} updateMeetingList={this.updateMeetingList} />
                 <AddEventModal
                     showModal={this.state.showModal}
                     onClose={this.closeModal}
