@@ -36,7 +36,8 @@ Meeting Scheduler to aplikacja do zarządzania spotkaniami. Pozwala użytkowniko
 #### Odpowiedzialny za
 - Backend
   - Utworzenie logiki spotkań
-- DevOps (Utworzenie plików docker'a)
+- DevOps 
+   - Utworzenie plików docker'a
 - Końcowy refactor kodu
 
 
