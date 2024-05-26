@@ -14,12 +14,23 @@ class Calendar extends Component {
             showModal: false,
             clickedDate: null,
             meetingsByCell: {},
-            selectedMeeting: null
+            selectedMeeting: null,
+            meetings: []
         };
     }
 
+    componentDidMount() {
+        this.setState({ meetings: this.props.meetings });
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.meetings !== this.props.meetings) {
+            this.setState({ meetings: this.props.meetings });
+        }
+    }
+
     renderCalendar = () => {
-        const { meetings } = this.props;
+        const { meetings } = this.state;
         const weekdays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nie'];
         const hours = [];
         const currentDate = new Date();
@@ -153,6 +164,7 @@ class Calendar extends Component {
                     showModal={this.state.showModal}
                     onClose={this.closeModal}
                     clickedDate={this.state.clickedDate}
+                    updateMeetingList={this.props.updateMeetingList}
                 />
             </div>
         );
