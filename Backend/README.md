@@ -21,7 +21,7 @@ Lub pobierz repozytorium poprzez przeglądarkę.
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
-7. W tym samym pliku pod `#EmailSender` ustaw swój mail w polu `spring.mail.username` i wygeneruj haslo, które umieścisz w `spring.mail.password`, nie zapomnij o skonfigurowaniu hosta i portu.
+6. W tym samym pliku pod `#EmailSender` ustaw swój mail w polu `spring.mail.username` i wygeneruj haslo, które umieścisz w `spring.mail.password`, nie zapomnij o skonfigurowaniu hosta i portu.
 
 ### Utworzenie bazy danych
 
