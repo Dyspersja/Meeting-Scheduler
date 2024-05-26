@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import MeetingService from '../../services/meeting.service';
 
 
-const AddEventModal = ({ showModal, onClose, meeting, updateMeetingList }) => {
+const AddEventModal = ({ showModal, onClose, meeting, clickedDate, updateMeetingList }) => {
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
     const [date, setDate] = useState('');
