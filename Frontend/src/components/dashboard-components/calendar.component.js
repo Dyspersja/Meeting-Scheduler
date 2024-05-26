@@ -3,6 +3,7 @@ import Table from 'react-bootstrap/Table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import AddEventModal from './addeventmodal.component';
+import MeetingDetailsModal from './meetingdetailsmodal.component';
 
 class Calendar extends Component {
     constructor(props) {
@@ -11,21 +12,24 @@ class Calendar extends Component {
             selectedDate: new Date(),
             currentWeek: 0,
             showModal: false,
-            clickedDate: null
+            clickedDate: null,
+            meetingsByCell: {},
+            selectedMeeting: null
         };
     }
 
     renderCalendar = () => {
+        const { meetings } = this.props;
         const weekdays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nie'];
         const hours = [];
         const currentDate = new Date();
         const firstDayOfWeek = new Date(currentDate);
         firstDayOfWeek.setDate(currentDate.getDate() + (this.state.currentWeek * 7));
-    
+
         while (firstDayOfWeek.getDay() !== 1) {
             firstDayOfWeek.setDate(firstDayOfWeek.getDate() - 1);
         }
-    
+
         for (let i = 0; i < 24; i++) {
             hours.push(
                 <tr key={i}>
@@ -33,19 +37,39 @@ class Calendar extends Component {
                     {weekdays.map((day, index) => {
                         const date = new Date(firstDayOfWeek);
                         date.setDate(firstDayOfWeek.getDate() + index);
+
+                        const cellKey = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}-${i}`;
+
+                        const meetingsForCell = meetings.filter(meeting => {
+                            const meetingDate = new Date(meeting.dateTime);
+                            return (
+                                meetingDate.getDate() === date.getDate() &&
+                                meetingDate.getMonth() === date.getMonth() &&
+                                meetingDate.getFullYear() === date.getFullYear() &&
+                                meetingDate.getHours() === i
+                            );
+                        });
+
                         return (
                             <td key={index} className="weekday" onClick={() => this.openModal(firstDayOfWeek, index, i)}>
-                                {/* tu spotkania boże */}
+                                {meetingsForCell.map((meeting, idx) => (
+                                    <div key={idx} className="meeting" onClick={(e) => this.selectMeeting(e, meeting)}>
+                                        {meeting.title}
+                                    </div>
+                                ))}
+                                {meetingsForCell.length === 0 && (
+                                    <div className="add-event" onClick={() => this.openModal(firstDayOfWeek, index, i)}></div>
+                                )}
                             </td>
                         );
                     })}
                 </tr>
             );
         }
-    
+
         const monthName = firstDayOfWeek.toLocaleString('default', { month: 'long' });
         const yearName = firstDayOfWeek.toLocaleString('default', { year: 'numeric' });
-    
+
         return (
             <div className='calendar'>
                 <div className='week-buttons'>
@@ -85,8 +109,7 @@ class Calendar extends Component {
             </div>
         );
     };
-    
-    
+
     nextWeek = () => {
         this.setState(prevState => ({
             currentWeek: prevState.currentWeek + 1,
@@ -104,17 +127,28 @@ class Calendar extends Component {
         clickedDate.setDate(firstDayOfWeek.getDate() + dayIndex);
         clickedDate.setHours(hourIndex, 0, 0, 0);
         this.setState({ showModal: true, clickedDate: clickedDate });
-
     };
 
     closeModal = () => {
         this.setState({ showModal: false, clickedDate: null });
     };
 
+    selectMeeting = (e, meeting) => {
+        e.stopPropagation();
+        this.setState({ selectedMeeting: meeting });
+    };
+
     render() {
         return (
             <div>
                 {this.renderCalendar()}
+                {this.state.selectedMeeting && (
+                    <MeetingDetailsModal
+                        show={true}
+                        onClose={() => this.setState({ selectedMeeting: null })}
+                        meeting={this.state.selectedMeeting}
+                    />
+                )}
                 <AddEventModal
                     showModal={this.state.showModal}
                     onClose={this.closeModal}
