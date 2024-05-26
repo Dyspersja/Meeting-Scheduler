@@ -17,7 +17,6 @@ Meeting Scheduler to aplikacja do zarządzania spotkaniami. Pozwala użytkowniko
 ### [Piotr Pecuch](https://github.com/PiotrPecuch)
 
 #### Odpowiedzialny za:
-- 
 - Backend
    - Implementacja mailSendera
    - Implementacja webSecurity
