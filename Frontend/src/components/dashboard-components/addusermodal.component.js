@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import MeetingService from '../../services/meeting.service';
 
-const AddUserModal = ({ showModal, onClose, meeting }) => {
+const AddUserModal = ({ showModal, onClose, meeting, updateMeetingList }) => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
 
@@ -32,6 +32,10 @@ const AddUserModal = ({ showModal, onClose, meeting }) => {
         } catch (error) {
             console.error('Wystąpił błąd:', error);
             setError('Wystąpił błąd podczas zapisywania użytkownika.');
+        }
+
+        if (typeof updateMeetingList === 'function') {
+            await updateMeetingList();
         }
     };
 

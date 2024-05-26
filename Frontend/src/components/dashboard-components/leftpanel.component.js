@@ -145,6 +145,7 @@ class LeftPanel extends Component {
                         showModal={this.state.showUserModal}
                         onClose={this.closeUserModal}
                         meeting={this.state.selectedMeeting}
+                        updateMeetingList={this.updateMeetingList}
                     />
                 }
                 {this.state.showDeleteModal &&
@@ -152,6 +153,7 @@ class LeftPanel extends Component {
                         showModal={this.state.showDeleteModal}
                         onClose={this.closeDeleteModal}
                         meeting={this.state.selectedMeeting}
+                        updateMeetingList={this.updateMeetingList}
                     />
                 }
                 {this.state.showMeetingDetailsModal &&

@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import MeetingService from '../../services/meeting.service';
 
-const DeleteEventModal = ({ showModal, onClose, meeting }) => {
+const DeleteEventModal = ({ showModal, onClose, meeting, updateMeetingList }) => {
     const [error, setError] = useState(null);
 
     const handleDelete = async () => {
@@ -15,6 +15,10 @@ const DeleteEventModal = ({ showModal, onClose, meeting }) => {
         } catch (error) {
             console.error('Wystąpił błąd:', error);
             setError('Wystąpił błąd podczas usuwania spotkania.');
+        }
+
+        if (typeof updateMeetingList === 'function') {
+            await updateMeetingList();
         }
     };
 
