@@ -20,6 +20,12 @@ class Dashboard extends Component {
         this.updateTodayMeetingList();
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.meetings !== this.state.meetings) {
+            this.updateMeetingList();
+        }
+    }
+
     updateMeetingList = () => {
         meetingService.getAllMeetings()
             .then(meetings => {

@@ -145,6 +145,27 @@ class MeetingService {
                 throw error;
             });
     }
+
+    async deleteAttendee(meetingId, attendeeEmail) {
+        return authService.refreshToken()
+            .then(() => {
+                return axios.delete(API_URL + `meeting/${meetingId}/attendee`, {
+                    data: { email: attendeeEmail },
+                    headers: {
+                        'Authorization': `Bearer ${authService.getLocalAccessToken()}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+            })
+            .then(response => {
+                console.log("Attendee deleted successfully:", response);
+                return response.data;
+            })
+            .catch(error => {
+                console.error('Error deleting attendee:', error);
+                throw error;
+            });
+    }
 }
 
 export default new MeetingService();

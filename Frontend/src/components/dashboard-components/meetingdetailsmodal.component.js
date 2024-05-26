@@ -6,7 +6,6 @@ import AddEventModal from './addeventmodal.component';
 import DeleteEventModal from './deleteeventmodal.component';
 import MeetingService from '../../services/meeting.service';
 
-
 const MeetingDetailsModal = ({ show, onClose, meeting, updateMeetingList }) => {
     const [attendees, setAttendees] = useState([]);
     const [showAddUserModal, setShowAddUserModal] = useState(false);
@@ -33,6 +32,18 @@ const MeetingDetailsModal = ({ show, onClose, meeting, updateMeetingList }) => {
         setShowAddUserModal(true);
     };
 
+    const handleDeleteAttendee = (attendeeEmail) => {
+        MeetingService.deleteAttendee(meeting.id, attendeeEmail)
+            .then(() => {
+                setAttendees(attendees.filter(attendee => attendee.attendeeEmail !== attendeeEmail));
+            })
+            .catch(error => console.error('Error deleting attendee:', error));
+    };
+
+    const handleChildModalClose = () => {
+        onClose();
+    };
+
     return (
         <>
             <Modal show={show} onHide={onClose}>
@@ -48,14 +59,20 @@ const MeetingDetailsModal = ({ show, onClose, meeting, updateMeetingList }) => {
                     <p><strong>Uczestnicy:</strong></p>
                     <ul>
                         {attendees.map((attendee, index) => (
-                            <li key={index}>{attendee.attendeeEmail}</li>
+                            <li key={index} style={{ display: 'flex', justifyContent: 'space-between', margin:'5px 0'}}>
+                                {attendee.attendeeEmail}
+                                <Button 
+                                    variant="outline-danger" 
+                                    size="sm" 
+                                    onClick={() => handleDeleteAttendee(attendee.attendeeEmail)}
+                                >
+                                    Usuń
+                                </Button>
+                            </li>
                         ))}
                     </ul>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={onClose}>
-                        Zamknij
-                    </Button>
                     <Button variant="primary" onClick={handleEdit}>
                         Edytuj
                     </Button>
@@ -70,19 +87,28 @@ const MeetingDetailsModal = ({ show, onClose, meeting, updateMeetingList }) => {
 
             <AddUserModal
                 showModal={showAddUserModal}
-                onClose={() => setShowAddUserModal(false)}
+                onClose={() => {
+                    setShowAddUserModal(false);
+                    handleChildModalClose();
+                }}
                 meeting={meeting}
             />
 
             <AddEventModal
                 showModal={showAddEventModal}
-                onClose={() => setShowAddEventModal(false)}
+                onClose={() => {
+                    setShowAddEventModal(false);
+                    handleChildModalClose();
+                }}
                 meeting={meeting}
             />
 
             <DeleteEventModal
                 showModal={showDeleteEventModal}
-                onClose={() => setShowDeleteEventModal(false)}
+                onClose={() => {
+                    setShowDeleteEventModal(false);
+                    handleChildModalClose();
+                }}
                 meeting={meeting}
                 updateMeetingList={updateMeetingList}
             />
