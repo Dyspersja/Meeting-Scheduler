@@ -1,10 +1,9 @@
 package com.ismb.meetingscheduler.security;
 
-import com.ismb.meetingscheduler.security.jwt.AuthEntryPointJwt;
-import com.ismb.meetingscheduler.security.jwt.AuthTokenFilter;
-import com.ismb.meetingscheduler.security.services.AuthenticatedUserService;
+import com.ismb.meetingscheduler.security.auth.AuthEntryPointJwt;
+import com.ismb.meetingscheduler.security.auth.AuthTokenFilter;
+import com.ismb.meetingscheduler.security.auth.AuthenticatedUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,11 +28,10 @@ public class WebSecurityConfig {
 
     private final AuthenticatedUserService userDetailsService;
     private final AuthEntryPointJwt unauthorizedHandler;
-    private final AuthTokenFilter authTokenFilter;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return authTokenFilter;
+        return new AuthTokenFilter();
     }
 
     @Bean
