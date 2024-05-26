@@ -17,10 +17,10 @@ Meeting Scheduler to aplikacja do zarządzania spotkaniami. Pozwala użytkowniko
 ### [Piotr Pecuch](https://github.com/PiotrPecuch)
 
 #### Odpowiedzialny za:
-- Implementacja webSecurity
-   - System logowania i rejestracji 
 - Backend
    - Implementacja mailSendera
+   - Implementacja webSecurity
+      - System logowania i rejestracji 
 - Frontend
 - Utworzenie Readme
 
@@ -36,7 +36,8 @@ Meeting Scheduler to aplikacja do zarządzania spotkaniami. Pozwala użytkowniko
 #### Odpowiedzialny za
 - Backend
   - Utworzenie logiki spotkań
-- DevOps (Utworzenie plików docker'a)
+- DevOps 
+   - Utworzenie plików docker'a
 - Końcowy refactor kodu
 
 
