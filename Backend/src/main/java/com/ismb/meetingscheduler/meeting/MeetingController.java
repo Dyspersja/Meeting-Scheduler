@@ -205,7 +205,12 @@ public class MeetingController {
     }
 
     @GetMapping("/getTodayMeetings")
-    public List<Meeting> findTodayMeetings(@AuthenticationPrincipal AuthenticatedUser userDetails){
-        return meetingRepository.findTodayMeetingsByOrganizerId(userDetails.getId());
+    public ResponseEntity<List<MeetingResponse>> findTodayMeetings(@AuthenticationPrincipal AuthenticatedUser userDetails){
+        List<Meeting> meetings = meetingRepository.findTodayMeetingsByOrganizerId(userDetails.getId());
+        List<MeetingResponse> meetingResponses = meetings.stream()
+                .map(meeting -> MeetingResponse.fromMeeting(meeting, true))
+                .toList();
+        
+        return ResponseEntity.ok(meetingResponses);
     }
 }
