@@ -25,7 +25,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ### Utworzenie bazy danych
 
-Przed uruchomieniem aplikacji z IDE, upewnij się, że utworzyłeś bazę danych o nazwie `meeting_scheduler`.
+Przed uruchomieniem aplikacji z IDE, upewnij się, że utworzyłeś bazę danych o nazwie którą podałeś w `spring.datasource.url`.
 ```bash
 CREATE DATABASE meeting_scheduler
 ```
