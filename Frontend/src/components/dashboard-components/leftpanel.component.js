@@ -163,6 +163,20 @@ class LeftPanel extends Component {
                         meeting={this.state.selectedMeeting}
                     />
                 }
+                {this.state.showDeleteModal &&
+                    <DeleteEventModal
+                        showModal={this.state.showDeleteModal}
+                        onClose={this.closeDeleteModal}
+                        meeting={this.state.selectedMeeting}
+                    />
+                }
+                {this.state.showMeetingDetailsModal &&
+                    <MeetingDetailsModal
+                        show={this.state.showMeetingDetailsModal}
+                        onClose={this.closeMeetingDetailsModal}
+                        meeting={this.state.selectedMeeting}
+                    />
+                }
             </div>
         );
     }
