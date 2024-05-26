@@ -36,12 +36,14 @@ const MeetingDetailsModal = ({ show, onClose, meeting, updateMeetingList }) => {
         MeetingService.deleteAttendee(meeting.id, attendeeEmail)
             .then(() => {
                 setAttendees(attendees.filter(attendee => attendee.attendeeEmail !== attendeeEmail));
+                updateMeetingList();
             })
             .catch(error => console.error('Error deleting attendee:', error));
     };
 
     const handleChildModalClose = () => {
         onClose();
+        updateMeetingList();
     };
 
     return (
@@ -59,7 +61,7 @@ const MeetingDetailsModal = ({ show, onClose, meeting, updateMeetingList }) => {
                     <p><strong>Uczestnicy:</strong></p>
                     <ul>
                         {attendees.map((attendee, index) => (
-                            <li key={index} style={{ display: 'flex', justifyContent: 'space-between', margin:'5px 0'}}>
+                            <li key={index} style={{ display: 'flex', justifyContent: 'space-between', margin: '5px 0' }}>
                                 {attendee.attendeeEmail}
                                 <Button 
                                     variant="outline-danger" 
@@ -92,6 +94,7 @@ const MeetingDetailsModal = ({ show, onClose, meeting, updateMeetingList }) => {
                     handleChildModalClose();
                 }}
                 meeting={meeting}
+                updateMeetingList={updateMeetingList}
             />
 
             <AddEventModal
@@ -101,6 +104,7 @@ const MeetingDetailsModal = ({ show, onClose, meeting, updateMeetingList }) => {
                     handleChildModalClose();
                 }}
                 meeting={meeting}
+                updateMeetingList={updateMeetingList}
             />
 
             <DeleteEventModal

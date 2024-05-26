@@ -158,6 +158,7 @@ class Calendar extends Component {
                         show={true}
                         onClose={() => this.setState({ selectedMeeting: null })}
                         meeting={this.state.selectedMeeting}
+                        updateMeetingList={this.props.updateMeetingList}
                     />
                 )}
                 <AddEventModal
