@@ -14,8 +14,11 @@ Aby uruchomić projekt lokalnie przejdź do katalogu projektu:
 cd .\Frontend\
 ```
 
-i wykonaj  polecenie:
+Wykonaj  polecenie:
+```
+npm install
+```
+Po zainstalowaniu pakietów wywyołaj:
 ```
 npm start
 ```
-
