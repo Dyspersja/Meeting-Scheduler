@@ -6,10 +6,10 @@ Meeting Scheduler to aplikacja do zarządzania spotkaniami. Pozwala użytkowniko
 
 ### Backend
 
-[Instrukcje do uruchomienia backendu](backend/README.md)
+[Instrukcje do uruchomienia backendu](Backend/README.md)
 
 ### Frontend
 
-[Instrukcje do uruchomienia frontendu](frontend/README.md)
+[Instrukcje do uruchomienia frontendu](Frontend/README.md)
 
 
