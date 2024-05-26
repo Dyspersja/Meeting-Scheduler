@@ -210,7 +210,7 @@ public class MeetingController {
         List<MeetingResponse> meetingResponses = meetings.stream()
                 .map(meeting -> MeetingResponse.fromMeeting(meeting, true))
                 .toList();
-        
+
         return ResponseEntity.ok(meetingResponses);
     }
 }

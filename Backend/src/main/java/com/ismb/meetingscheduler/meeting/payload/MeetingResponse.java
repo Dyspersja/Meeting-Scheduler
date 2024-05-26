@@ -17,7 +17,7 @@ public class MeetingResponse {
     private String description;
     private Timestamp dateTime;
     private String location;
-    private Long organizerId;
+    private String organizerEmail;
     private boolean isOwner;
 
     public static MeetingResponse fromMeeting(Meeting meeting, boolean isOwner) {
@@ -27,7 +27,7 @@ public class MeetingResponse {
                 .description(meeting.getDescription())
                 .dateTime(meeting.getDateTime())
                 .location(meeting.getLocation())
-                .organizerId(meeting.getOrganizer().getId())
+                .organizerEmail(meeting.getOrganizer().getEmail())
                 .isOwner(isOwner)
                 .build();
     }
