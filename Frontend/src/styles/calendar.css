@@ -222,13 +222,17 @@ h1 {
 }
 
 .meeting {
-    background-color: #007bff;
+    background-color: #29b6f6;
     color: #fff;
     margin: 5px;
     padding: 5px;
     border-radius: 5px;
     font-size: 0.75rem;
     text-align: center;
+}
+
+.meeting:hover {
+    background-color: #007bff;
 }
 
 @media (max-width: 1024px) {
