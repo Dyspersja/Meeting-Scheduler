@@ -1,18 +1,14 @@
 import axios from "axios";
-import authHeader from './auth-header';
 import authService from "./auth.service";
-import leftpanelComponent from "../components/dashboard-components/leftpanel.component";
-import LeftPanel from "../components/dashboard-components/leftpanel.component";
 
 const API_URL = "http://localhost:8080/api/";
 
 class MeetingService {
-
     async getTodayMeetings() {
         return authService.refreshToken()
             .then(() => {
                 console.log('Token refreshed successfully');
-                return axios.get('http://localhost:8080/api/meeting/getTodayMeetings', {
+                return axios.get(API_URL + 'meeting/getTodayMeetings', {
                     headers: {
                         'Authorization': `Bearer ${authService.getLocalAccessToken()}`,
                         'Content-Type': 'application/json'
@@ -53,10 +49,6 @@ class MeetingService {
             });
     }
 
-
-
-
-
     updateMeeting(id, title, description, location, dateTime) {
         return authService.refreshToken().then(() => {
             return axios.put(API_URL + 'meeting/' + id, {
@@ -64,7 +56,12 @@ class MeetingService {
                 description: description,
                 location: location,
                 dateTime: dateTime
-            }, { headers: authHeader() });
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${authService.getLocalAccessToken()}`,
+                    'Content-Type': 'application/json'
+                }
+            });
         }).catch(error => {
             console.error('Error updating meeting:', error);
             throw error;
@@ -81,10 +78,11 @@ class MeetingService {
                     'Content-Type': 'application/json'
                 }
             });
+        }).catch(error => {
+            console.error('Error adding user to meeting:', error);
+            throw error;
         });
     }
-
-
 
     deleteMeeting(id) {
         return authService.refreshToken()
@@ -106,6 +104,47 @@ class MeetingService {
             });
     }
 
+    async getAllMeetings() {
+        return authService.refreshToken()
+            .then(() => {
+                return axios.get(API_URL + 'meeting', {
+                    headers: {
+                        'Authorization': `Bearer ${authService.getLocalAccessToken()}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+            })
+            .then(response => {
+                const data = response.data;
+                console.log(data);
+                return data;
+            })
+            .catch(error => {
+                console.error('Error fetching all meetings:', error);
+                throw error;
+            });
+    }
+
+    async getAttendees(meetingId) {
+        return authService.refreshToken()
+            .then(() => {
+                return axios.get(API_URL + `meeting/${meetingId}/attendee`, {
+                    headers: {
+                        'Authorization': `Bearer ${authService.getLocalAccessToken()}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+            })
+            .then(response => {
+                const data = response.data;
+                console.log(data);
+                return data;
+            })
+            .catch(error => {
+                console.error('Error fetching attendees for meeting:', error);
+                throw error;
+            });
+    }
 }
 
 export default new MeetingService();
