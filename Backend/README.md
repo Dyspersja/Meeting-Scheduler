@@ -43,4 +43,4 @@ Upewnij się, że masz zainstalowaną platformę Docker na swoim komputerze.
 ```bash
 docker-compose up
 ```
-3. Twoja aplikacja backendowa będzie dostępna pod adresem `http://localhost:8080`.
+4. Twoja aplikacja backendowa będzie dostępna pod adresem `http://localhost:8080`.
