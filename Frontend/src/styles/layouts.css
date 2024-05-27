@@ -63,6 +63,11 @@ nav {
 @media screen and (max-width: 768px) {
   nav {
     background-color: transparent;
+    pointer-events: none;
+  }
+
+  nav * {
+    pointer-events: auto;
   }
 
   .menu-icon {
