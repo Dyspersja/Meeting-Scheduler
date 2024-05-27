@@ -35,8 +35,10 @@ CREATE DATABASE meeting_scheduler
 
 Upewnij się, że masz zainstalowaną platformę Docker na swoim komputerze.
 
-1. Otwórz terminal i przejdź do katalogu z pobranym projektem.
-2. Uruchom docker-compose, poprzez wpisanie:
+1. Skonfiguruj plik properties który znajduje się w `Backend\src\main\resources\application.properties`.
+2. Otwórz terminal i przejdź do katalogu z pobranym projektem.
+3. Uruchom docker-compose, poprzez wpisanie:
+
 
 ```bash
 docker-compose up
