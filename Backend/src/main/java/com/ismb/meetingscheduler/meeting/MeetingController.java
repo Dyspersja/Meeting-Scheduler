@@ -124,9 +124,6 @@ public class MeetingController {
         if(optionalMeeting.isEmpty()) return ResponseEntity.notFound().build();
 
         Meeting meeting = optionalMeeting.get();
-
-        if(!Objects.equals(meeting.getOrganizer().getId(), userDetails.getId()))
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         
         List<Attendee> attendeeList = attendeeRepository.findByMeetingId(meetingId);
         List<AttendeeResponse> attendeeResponseList = attendeeList.stream()
