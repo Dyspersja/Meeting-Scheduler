@@ -12,8 +12,6 @@ class LeftPanel extends Component {
         this.updateMeetingList = this.updateMeetingList.bind(this);
         this.state = {
             meetings: [],
-            tokenLoaded: false,
-            token: '',
             showEditModal: false,
             showUserModal: false,
             showDeleteModal: false,
@@ -26,94 +24,60 @@ class LeftPanel extends Component {
         await this.updateMeetingList();
     }
 
-    updateMeetingList() {
-        meetingService.getTodayMeetings()
-            .then(meetings => {
-                this.setState(prevState => ({
-                    meetings: meetings
-                }));
-                console.log("UpdateMeetingList");
-                console.log(meetings);
-            })
-            .catch(error => {
-                console.error('Error in updateMeetingList:', error);
-            });
+    async updateMeetingList() {
+        try {
+            const meetings = await meetingService.getTodayMeetings();
+            this.setState({ meetings });
+            console.log("Updated Meeting List:", meetings);
+        } catch (error) {
+            console.error('Error in updateMeetingList:', error);
+        }
     }
 
     openEditModal = (meeting = null) => {
-        this.setState({
-            showEditModal: true,
-            selectedMeeting: meeting,
-        });
+        this.setState({ showEditModal: true, selectedMeeting: meeting });
     }
 
     openAddUserModal = (meeting) => {
-        this.setState({
-            showUserModal: true,
-            selectedMeeting: meeting,
-        });
+        this.setState({ showUserModal: true, selectedMeeting: meeting });
     }
 
     openDeleteModal = (meeting) => {
-        this.setState({
-            showDeleteModal: true,
-            selectedMeeting: meeting,
-        });
+        this.setState({ showDeleteModal: true, selectedMeeting: meeting });
     }
 
     openMeetingDetailsModal = (meeting) => {
-        this.setState({
-            showMeetingDetailsModal: true,
-            selectedMeeting: meeting,
-        });
+        this.setState({ showMeetingDetailsModal: true, selectedMeeting: meeting });
     }
 
     closeMeetingDetailsModal = () => {
-        this.setState({
-            showMeetingDetailsModal: false,
-            selectedMeeting: null,
-        });
+        this.setState({ showMeetingDetailsModal: false, selectedMeeting: null });
     }
 
     closeModal = () => {
-        this.setState({
-            showEditModal: false,
-            selectedMeeting: null,
-        });
+        this.setState({ showEditModal: false, selectedMeeting: null });
     }
 
     closeUserModal = () => {
-        this.setState({
-            selectedMeeting: null,
-            showUserModal: false,
-        });
+        this.setState({ showUserModal: false, selectedMeeting: null });
     }
 
-    closeDeleteModal = async (meetingId) => {
-        this.setState({
-            showDeleteModal: false,
-            selectedMeeting: null,
-            meetings: this.state.meetings.filter(meeting => meeting.id !== meetingId)
-        });
-    }
-
-    createNewMeeting = (title, description, location, dateTime) => {
-        meetingService.createMeeting(title, description, location, dateTime, this.updateMeetingList, () => {
-            console.log('Meeting created and list updated');
-        });
+    closeDeleteModal = async () => {
+        this.setState({ showDeleteModal: false, selectedMeeting: null });
+        await this.updateMeetingList();
     }
 
     render() {
+        const { meetings, showEditModal, showUserModal, showDeleteModal, showMeetingDetailsModal, selectedMeeting } = this.state;
+
         return (
             <div className='left-panel'>
                 <div className='add-button'>
-                    <button onClick={() => this.openEditModal(null)}>
-                        Dodaj
-                    </button>
+                    <button onClick={() => this.openEditModal(null)}>Dodaj</button>
                 </div>
                 <div className='planner'>
-                    <div className={`planner-title-text`}>Dzisiejsze spotkania</div>
-                    {Array.isArray(this.state.meetings) && this.state.meetings.map((item, index) => (
+                    <div className='planner-title-text'>Dzisiejsze spotkania</div>
+                    {Array.isArray(meetings) && meetings.map((item, index) => (
                         <div key={index} className={`meeting-item ${new Date(item.dateTime) < new Date() ? 'red' : 'green'}`}>
                             <p className='title' onClick={() => this.openMeetingDetailsModal(item)}>Tytuł: {item.title}</p>
                             <p>Data i czas: {new Date(item.dateTime).toLocaleString()}</p>
@@ -132,63 +96,35 @@ class LeftPanel extends Component {
                         </div>
                     ))}
                 </div>
-                {this.state.showEditModal &&
+                {showEditModal &&
                     <AddEventModal
-                        showModal={this.state.showEditModal}
+                        showModal={showEditModal}
                         onClose={this.closeModal}
-                        meeting={this.state.selectedMeeting}
+                        meeting={selectedMeeting}
                         updateMeetingList={this.updateMeetingList}
                     />
                 }
-                {this.state.showUserModal &&
+                {showUserModal &&
                     <AddUserModal
-                        showModal={this.state.showUserModal}
+                        showModal={showUserModal}
                         onClose={this.closeUserModal}
-                        meeting={this.state.selectedMeeting}
+                        meeting={selectedMeeting}
                         updateMeetingList={this.updateMeetingList}
                     />
                 }
-                {this.state.showDeleteModal &&
+                {showDeleteModal &&
                     <DeleteEventModal
-                        showModal={this.state.showDeleteModal}
+                        showModal={showDeleteModal}
                         onClose={this.closeDeleteModal}
-                        meeting={this.state.selectedMeeting}
+                        meeting={selectedMeeting}
                         updateMeetingList={this.updateMeetingList}
                     />
                 }
-                {this.state.showMeetingDetailsModal &&
+                {showMeetingDetailsModal &&
                     <MeetingDetailsModal
-                        show={this.state.showMeetingDetailsModal}
+                        show={showMeetingDetailsModal}
                         onClose={this.closeMeetingDetailsModal}
-                        meeting={this.state.selectedMeeting}
-                    />
-                }
-                {this.state.showDeleteModal &&
-                    <DeleteEventModal
-                        showModal={this.state.showDeleteModal}
-                        onClose={this.closeDeleteModal}
-                        meeting={this.state.selectedMeeting}
-                    />
-                }
-                {this.state.showMeetingDetailsModal &&
-                    <MeetingDetailsModal
-                        show={this.state.showMeetingDetailsModal}
-                        onClose={this.closeMeetingDetailsModal}
-                        meeting={this.state.selectedMeeting}
-                    />
-                }
-                {this.state.showDeleteModal &&
-                    <DeleteEventModal
-                        showModal={this.state.showDeleteModal}
-                        onClose={this.closeDeleteModal}
-                        meeting={this.state.selectedMeeting}
-                    />
-                }
-                {this.state.showMeetingDetailsModal &&
-                    <MeetingDetailsModal
-                        show={this.state.showMeetingDetailsModal}
-                        onClose={this.closeMeetingDetailsModal}
-                        meeting={this.state.selectedMeeting}
+                        meeting={selectedMeeting}
                     />
                 }
             </div>
